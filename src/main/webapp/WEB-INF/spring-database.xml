@@ -26,7 +26,7 @@
 			<list>
 				<value>Users.hbm.xml</value>
 				<value>UserRoles.hbm.xml</value>
-			</list> 
+			</list>
 		</property>
 		<property name="hibernateProperties">
 			<props>
@@ -42,9 +42,12 @@
 	<bean id="userDao" class="com.ensi.project.dao.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
-	<bean id="UserService" class="com.ensi.project.service.UserService">
+	
+	<bean id="bCryptPasswordEncoder" class=" org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
+	<bean id="userService" class="com.ensi.project.service.UserServiceImpl">
 		<property name="userDao" ref="userDao" />
+		<property name="bCryptPasswordEncoder" ref="bCryptPasswordEncoder" />
 	</bean>
 
 	<!-- MUST have transaction manager, using aop and aspects -->

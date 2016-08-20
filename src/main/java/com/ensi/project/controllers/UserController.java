@@ -1,21 +1,32 @@
 package com.ensi.project.controllers;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ensi.project.model.User;
+import com.ensi.project.service.UserService;
+
 @Controller
-public class LoginController {
+public class UserController {
+	@Autowired
+	UserService userService;
+
 	@RequestMapping(value = { "/", "/home**" }, method = RequestMethod.GET)
 	public String homePage() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -24,7 +35,6 @@ public class LoginController {
 		} else {
 			return "redirect:login";
 		}
-		
 
 	}
 
@@ -94,6 +104,22 @@ public class LoginController {
 		model.setViewName("403");
 		return model;
 
+	}
+
+	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
+	public String newUser(ModelMap model) {
+		User user = new User();
+		model.addAttribute("user", user);
+		return "registration";
+	}
+
+	@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
+	public String saveUser(@Valid User user, BindingResult result, ModelMap model) {
+		if (result.hasErrors()) {
+			return "registration";
+		}
+		userService.save(user);
+		return "login";
 	}
 
 }

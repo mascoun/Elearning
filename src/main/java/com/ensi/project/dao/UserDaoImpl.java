@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 
 import com.ensi.project.model.User;
+import com.ensi.project.model.UserRole;
 
 public class UserDaoImpl implements UserDao {
 
@@ -16,15 +17,23 @@ public class UserDaoImpl implements UserDao {
 
 		List<User> users = new ArrayList<User>();
 
-		users = getSessionFactory().getCurrentSession()
-			.createQuery("from User where username=?")
-			.setParameter(0, username).list();
+		users = getSessionFactory().getCurrentSession().createQuery("from User where username=?")
+				.setParameter(0, username).list();
 
 		if (users.size() > 0) {
 			return users.get(0);
 		} else {
 			return null;
 		}
+
+	}
+
+	public void save(User user,UserRole userRole) {
+		getSessionFactory().getCurrentSession().persist(user);
+		getSessionFactory().getCurrentSession().persist(userRole);
+	}
+
+	public void delete(User user) {
 
 	}
 
