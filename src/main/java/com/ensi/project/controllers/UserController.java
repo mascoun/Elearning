@@ -27,17 +27,6 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@RequestMapping(value = { "/", "/home**" }, method = RequestMethod.GET)
-	public String homePage() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			return "home";
-		} else {
-			return "redirect:login";
-		}
-
-	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
@@ -119,7 +108,7 @@ public class UserController {
 			return "registration";
 		}
 		userService.save(user);
-		return "login";
+		return "redirect:login";
 	}
 
 }

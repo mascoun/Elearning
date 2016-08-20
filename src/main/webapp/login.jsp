@@ -6,7 +6,7 @@
 	pageEncoding="utf-8"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,6 +22,10 @@
 	var="bootstrapJs" />
 <spring:url value="/resources/template/js/flat-ui.min.js" var="flatuiJs" />
 
+<spring:url value="/resources/template/img/favicon.ico" var="favicon" />
+<link rel="icon" href="${favicon}" />
+
+
 <link href="${bootstrapCss}" rel="stylesheet">
 <link href="${flatuiCss}" rel="stylesheet">
 <link href="${appCss}" rel="stylesheet">
@@ -34,7 +38,7 @@
 	<div class="container">
 		<div class="card card-container">
 			<!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
-		<!-- 	<img id="profile-img" class="profile-img-card"
+			<!-- 	<img id="profile-img" class="profile-img-card"
 				src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 			<p id="profile-name" class="profile-name-card"></p>  -->
 			<c:if test="${not empty error}">
@@ -43,8 +47,7 @@
 			<c:if test="${not empty msg}">
 				<div class="alert alert-info">${msg}</div>
 			</c:if>
-			<form name='loginForm'
-				action="<c:url value='/login'></c:url>"
+			<form name='loginForm' action="<c:url value='/login'></c:url>"
 				method='POST' class="form-signin">
 				<span id="reauth-email" class="reauth-email"></span> <input
 					type="text" name="username" id="inputUsername" class="form-control"
