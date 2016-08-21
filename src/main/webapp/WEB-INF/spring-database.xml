@@ -26,6 +26,10 @@
 			<list>
 				<value>com.ensi.project.model.User</value>
 				<value>com.ensi.project.model.UserRole</value>
+				<value>com.ensi.project.model.Course</value>
+				<value>com.ensi.project.model.Student</value>
+				<value>com.ensi.project.model.Teacher</value>
+				<value>com.ensi.project.model.Classe</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -35,22 +39,29 @@
 				</prop>
 				<prop key="hibernate.format_sql">true</prop>
 				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
 	</bean>
 
-	<bean id="userDao" class="com.ensi.project.dao.UserDaoImpl">
+	<bean id="userDao" class="com.ensi.project.dao.impl.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="courseDao" class="com.ensi.project.dao.impl.CourseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 
 	<bean id="bCryptPasswordEncoder"
 		class=" org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-	<bean id="userService" class="com.ensi.project.service.UserServiceImpl">
+	<bean id="userService" class="com.ensi.project.service.impl.UserServiceImpl">
 		<property name="userDao" ref="userDao" />
 		<property name="bCryptPasswordEncoder" ref="bCryptPasswordEncoder" />
 	</bean>
-
+	<bean id="courseService" class="com.ensi.project.service.impl.CourseServiceImpl">
+		<property name="courseDao" ref="courseDao" />
+	</bean>
 	<!-- MUST have transaction manager, using aop and aspects -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">

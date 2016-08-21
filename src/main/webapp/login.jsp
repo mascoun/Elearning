@@ -18,8 +18,7 @@
 <spring:url value="/resources/template/css/flat-ui.min.css"
 	var="flatuiCss" />
 <spring:url value="/resources/template/css/app.css" var="appCss" />
-<spring:url value="/resources/template/js/bootstrap.min.js"
-	var="bootstrapJs" />
+
 <spring:url value="/resources/template/js/flat-ui.min.js" var="flatuiJs" />
 
 <spring:url value="/resources/template/img/favicon.ico" var="favicon" />
@@ -72,7 +71,6 @@
 	<!-- /container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="${bootstrapJs}"></script>
 	<script src="${flatuiJs}"></script>
 </body>
 </html>

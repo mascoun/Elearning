@@ -1,5 +1,4 @@
-package com.ensi.project.service;
-
+package com.ensi.project.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,33 +14,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.ensi.project.dao.UserDao;
 import com.ensi.project.model.UserRole;
+import com.ensi.project.service.UserService;
 
 public class UserServiceImpl implements UserService {
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	private UserDao userDao;
 
 	@Override
-	public UserDetails loadUserByUsername(final String username)
-               throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 
 		com.ensi.project.model.User user = userDao.findByUserName(username);
 		List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
 		return buildUserForAuthentication(user, authorities);
 	}
-	
+
 	public void save(com.ensi.project.model.User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        UserRole userRole = new UserRole();
-        userRole.setUser(user);
-        userRole.setRole("ROLE_USER");
-		userDao.save(user,userRole);
+		UserRole userRole = new UserRole();
+		userRole.setUser(user);
+		userRole.setRole("ROLE_USER");
+		userDao.save(user, userRole);
 	}
 
-	private User buildUserForAuthentication(com.ensi.project.model.User user,
-		List<GrantedAuthority> authorities) {
-		return new User(user.getUsername(),
-			user.getPassword(), user.isEnabled(),
-                        true, true, true, authorities);
+	private User buildUserForAuthentication(com.ensi.project.model.User user, List<GrantedAuthority> authorities) {
+		return new User(user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true, authorities);
 	}
 
 	private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
@@ -73,6 +69,5 @@ public class UserServiceImpl implements UserService {
 	public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
-
 
 }

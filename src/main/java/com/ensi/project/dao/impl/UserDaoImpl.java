@@ -1,10 +1,11 @@
-package com.ensi.project.dao;
+package com.ensi.project.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 
+import com.ensi.project.dao.UserDao;
 import com.ensi.project.model.User;
 import com.ensi.project.model.UserRole;
 

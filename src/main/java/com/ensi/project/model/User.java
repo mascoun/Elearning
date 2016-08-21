@@ -4,16 +4,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "users", catalog = "elearning")
+@DiscriminatorColumn(name = "TYPE_USER", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
+	private int id;
 	private String username;
 	private String password;
 	private String email;
@@ -40,6 +47,15 @@ public class User {
 	}
 
 	@Id
+	@Column(name = "id", insertable = false, updatable = false)
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@Column(name = "username", unique = true, nullable = false, length = 45)
 	public String getUsername() {
 		return this.username;

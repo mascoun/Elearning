@@ -163,3 +163,68 @@ body, html {
 .navbar .navbar-collapse {
 	text-align: center;
 }
+
+/*  MODAL   */
+.alert-window {
+	position: relative;
+	background-color: lightblue;
+	border: 1px solid black;
+	border-radius: 8px;
+	box-shadow: 0 0 16px black;
+	-webkit-transition: all .25s cubic-bezier(0.52, 0.76, 0.52, 0.76);
+	transition: all .25s cubic-bezier(0.52, 0.76, 0.52, 0.76);
+	margin-top: 50px;
+}
+
+.alert-window:before {
+	position: relative;
+	display: inline-block;
+	-webkit-filter: blur(15px);
+	-moz-filter: blur(15px);
+	-o-filter: blur(15px);
+	-ms-filter: blur(15px);
+	filter: url(#blurLayer);
+	-webkit-filter: blur(15px);
+	filter: blur(15px);
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='15');
+	opacity: .9;
+	content: ' ';
+	background: lightblue;
+	background-size: cover;
+}
+
+.alert-window>h4 {
+	position: relative;
+	color: white;
+	text-align: center;
+	padding: 0;
+	color: white;
+	text-align: center;
+}
+
+.alert-body {
+	padding: 5px;
+	width: 100%;
+	height: 100%;
+	background: white;
+	height: 100%;
+	margin-bottom: 10px;
+}
+
+.flex {
+	display: flex;
+}
+
+.pagination-custom {
+	margin: auto;
+}
+
+.pagination.pagination-custom li>span:hover, .pagination.pagination-custom li>a:focus,
+	.pagination.pagination-custom li>span:focus {
+	color: #fff;
+	background-color: #3498db;
+}
+
+.pagination .active a {
+	background: #3498db;
+}
