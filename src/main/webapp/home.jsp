@@ -44,6 +44,14 @@
 			<div class="navbar navbar-default" role="navigation">
 				<div>
 					<ul class="nav navbar-nav">
+						<sec:authorize access="hasRole('ROLE_TEACHER')">
+							<li class="active"><a href="#" data-toggle="modal"
+								data-target="#myModal" id="AddCoursesButton" class="item"> <span
+									class="notify-badge green glyphicon glyphicon-plus"></span><img
+									src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "
+									alt="Ajouter un cours" title="Ajouter un cours"
+									data-toggle="tooltip" data-placement="bottom" /></a></li>
+						</sec:authorize>
 						<li class="active"><a href="#" data-toggle="modal"
 							data-target="#myModal" id="CoursesButton"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "

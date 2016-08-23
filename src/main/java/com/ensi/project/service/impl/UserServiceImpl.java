@@ -70,4 +70,9 @@ public class UserServiceImpl implements UserService {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
+	@Override
+	public com.ensi.project.model.User getUserByUsername(String username) {
+		return userDao.findByUserName(username);
+	}
+
 }

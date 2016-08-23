@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "courses", catalog = "elearning")
 public class Course {
-	private int id;
+	private int idCourse;
 	private String name;
 	private String description;
 	private Teacher teacher;
@@ -22,12 +22,12 @@ public class Course {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "course_id", unique = true, nullable = false, insertable = false, updatable = false)
-	public int getId() {
-		return id;
+	public int getIdCourse() {
+		return idCourse;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setIdCourse(int idCourse) {
+		this.idCourse = idCourse;
 	}
 
 	@Column(name = "name", nullable = false)

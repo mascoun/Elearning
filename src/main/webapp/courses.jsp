@@ -25,9 +25,9 @@
 				</tr>
 				<c:forEach items="${listeCourses}" var="course">
 					<tr>
-						<td><c:out value="${course.id}" /></td>
+						<td><c:out value="${course.name}" /></td>
 						<td><a href="<c:out value="${course.link}"></c:out>"> <c:out
-									value="${course.name}"></c:out></a></td>
+									value="${course.description}"></c:out></a></td>
 						<td><c:out value="${course.date}" /></td>
 					</tr>
 				</c:forEach>

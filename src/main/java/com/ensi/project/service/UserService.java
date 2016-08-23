@@ -6,4 +6,5 @@ import com.ensi.project.model.User;
 
 public interface UserService extends UserDetailsService{
 	public void save(User user);
+	public User getUserByUsername(String username);
 }

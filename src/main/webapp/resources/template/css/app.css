@@ -228,3 +228,28 @@ body, html {
 .pagination .active a {
 	background: #3498db;
 }
+/*  badge */
+.item {
+	position: relative;
+	padding-top: 20px;
+	display: inline-block;
+}
+
+.notify-badge {
+	position: absolute;
+	right: 15px;
+	top: 5px;
+	text-align: center;
+	border-radius: 50%;
+	color: white;
+	font-size: 10px;
+	width: 20px;
+	height: 20px;
+	padding-top: 4px;
+}
+.notify-badge.green {
+	background: green;
+}
+.notify-badge.red {
+	background: red;
+}

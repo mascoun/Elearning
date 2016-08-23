@@ -18,5 +18,7 @@ $(document).ready(function() {
 
 		});
 	});
-
+	$('#AddCoursesButton').click(function() {
+		$('#myModal').load(WebSiteURL + "/courses/new");
+	});
 });
