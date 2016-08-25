@@ -17,12 +17,18 @@
 <title>E-learning</title>
 <spring:url value="/resources/template/css/bootstrap.min.css"
 	var="bootstrapCss" />
-<spring:url value="/resources/template/css/flat-ui.min.css"
-	var="flatuiCss" />
+<spring:url value="/resources/template/css/jasny-bootstrap.min.css"
+	var="jasnyCss" />
+<spring:url value="/resources/template/css/bootstrap-dialog.min.css"
+	var="DialogCss" />
 <spring:url value="/resources/template/css/app.css" var="appCss" />
 
 <spring:url value="/resources/template/js/flat-ui.min.js" var="flatuiJs" />
 
+<spring:url value="/resources/template/js/jasny-bootstrap.min.js"
+	var="jasnyJs" />
+<spring:url value="/resources/template/js/bootstrap-dialog.min.js"
+	var="DialogJs" />
 <spring:url value="/resources/template/js/interface.js"
 	var="interfaceJs" />
 <spring:url value="/resources/template/js/app.js" var="appJs" />
@@ -31,7 +37,8 @@
 <link rel="icon" href="${favicon}" />
 
 <link href="${bootstrapCss}" rel="stylesheet">
-<%-- <link href="${flatuiCss}" rel="stylesheet"> --%>
+<link href="${jasnyCss}" rel="stylesheet">
+<link href="${DialogCss}" rel="stylesheet">
 <link href="${appCss}" rel="stylesheet">
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -45,35 +52,35 @@
 				<div>
 					<ul class="nav navbar-nav">
 						<sec:authorize access="hasRole('ROLE_TEACHER')">
-							<li class="active"><a href="#" data-toggle="modal"
-								data-target="#myModal" id="AddCoursesButton" class="item"> <span
+							<li><a href="#" data-toggle="modal" data-target="#myModal"
+								id="AddCoursesButton" class="item"> <span
 									class="notify-badge green glyphicon glyphicon-plus"></span><img
 									src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "
 									alt="Ajouter un cours" title="Ajouter un cours"
 									data-toggle="tooltip" data-placement="bottom" /></a></li>
 						</sec:authorize>
-						<li class="active"><a href="#" data-toggle="modal"
-							data-target="#myModal" id="CoursesButton"><img
+						<li><a href="#" data-toggle="modal" data-target="#myModal"
+							id="CoursesButton"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "
 								alt="Consulter les cours" title="Consulter les cours"
 								data-toggle="tooltip" data-placement="bottom" /></a></li>
-						<li class="active"><a href="#"><img
+						<li><a href="#"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Exercices.png "
 								alt="Consulter les exercices" title="Consulter les exercices"
 								data-toggle="tooltip" data-placement="bottom" /></a></li>
-						<li class="active"><a href="#"><img
+						<!-- <li class="active"><a href="#"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Task.png "
 								alt="Exercices à faire" title="Exercices à faire"
-								data-toggle="tooltip" data-placement="bottom" /></a></li>
-						<li class="active"><a href="#"><img
+								data-toggle="tooltip" data-placement="bottom" /></a></li> -->
+						<li><a href="#"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Timing.png "
 								alt="Emplois du temps" title="Emplois du temps"
 								data-toggle="tooltip" data-placement="bottom" /></a></li>
-						<li class="active"><a href="#"><img
+						<li><a href="#"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "
 								alt="Messagerie" title="Messagerie" data-toggle="tooltip"
 								data-placement="bottom" /></a></li>
-						<li class="active"><a href="#"><img
+						<li><a href="#"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Logout.png "
 								alt="Logout" title="Logout" data-toggle="tooltip"
 								data-placement="bottom" id="LogoutButton" /></a></li>
@@ -93,6 +100,8 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="${flatuiJs}"></script>
+	<script src="${jasnyJs}"></script>
+	<script src="${DialogJs}"></script>
 	<script src="${appJs}"></script>
 </body>
 </html>

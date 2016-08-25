@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.ensi.project.dao.CourseDao;
 import com.ensi.project.model.Course;
+import com.ensi.project.model.Teacher;
 import com.ensi.project.service.CourseService;
 
 public class CourseServiceImpl implements CourseService {
 
 	private CourseDao courseDao;
 
-	public Course findCourseById(Integer id) {
+	public Course getCourseById(Integer id) {
 		Course course = courseDao.findCourseById(id);
 		return course;
 	}
@@ -26,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	public List<Course> getAllCourses() {
-		List<Course> listCourses = courseDao.getAllCourses();
+		List<Course> listCourses = courseDao.findAllCourses();
 		return listCourses;
 	}
 
@@ -40,5 +41,9 @@ public class CourseServiceImpl implements CourseService {
 
 	public void setCourseDao(CourseDao courseDao) {
 		this.courseDao = courseDao;
+	}
+
+	public List<Course> getAllCoursesByTeacher(Teacher teacher) {
+		return courseDao.findAllCoursesByTeacher(teacher);
 	}
 }

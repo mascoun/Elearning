@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ensi.project.dao.CourseDao;
 import com.ensi.project.model.Course;
+import com.ensi.project.model.Teacher;
 
 @Repository
 public class CourseDaoImpl implements CourseDao {
@@ -37,9 +38,17 @@ public class CourseDaoImpl implements CourseDao {
 	};
 
 	@SuppressWarnings("unchecked")
-	public List<Course> getAllCourses() {
+	public List<Course> findAllCourses() {
 		List<Course> listCourses = new ArrayList<Course>();
 		listCourses = getSessionFactory().getCurrentSession().createQuery("from Course").list();
+		return listCourses;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Course> findAllCoursesByTeacher(Teacher teacher) {
+		List<Course> listCourses = new ArrayList<Course>();
+		listCourses = getSessionFactory().getCurrentSession().createQuery("from Course where teacher=?")
+				.setParameter(0, teacher).list();
 		return listCourses;
 	}
 

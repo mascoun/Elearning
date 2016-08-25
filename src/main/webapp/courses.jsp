@@ -1,3 +1,5 @@
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -13,22 +15,39 @@
 			<thead>
 				<tr>
 					<th>Nom du cours</th>
-					<th>Matiere</th>
-					<th>Date d'ajout</th>
+					<sec:authorize access="hasRole('ROLE_STUDENT')">
+						<th class="hidden-xs">Matiere</th>
+					</sec:authorize>
+					<th class="hidden-xs hidden-sm">Description</th>
+					<th class="hidden-xs">Date d'ajout</th>
+					<sec:authorize access="hasRole('ROLE_TEACHER')">
+						<th></th>
+					</sec:authorize>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Chapite 1 : Les Pointeurs</td>
-					<td>Algorithme</td>
-					<td>10 Mars 2010</td>
-				</tr>
 				<c:forEach items="${listeCourses}" var="course">
 					<tr>
-						<td><c:out value="${course.name}" /></td>
-						<td><a href="<c:out value="${course.link}"></c:out>"> <c:out
-									value="${course.description}"></c:out></a></td>
-						<td><c:out value="${course.date}" /></td>
+						<td><a href="<c:out value="${course.link}"></c:out>"><c:out
+									value="${course.name}" /></a></td>
+						<sec:authorize access="hasRole('ROLE_STUDENT')">
+							<td class="hidden-xs"><c:out
+									value="${course.teacher.subject }"></c:out></td>
+						</sec:authorize>
+						<td class="hidden-xs hidden-sm"><c:out
+								value="${course.description}"></c:out></td>
+						<td class="hidden-xs"><c:out value="${course.date}" /></td>
+						<sec:authorize access="hasRole('ROLE_TEACHER')">
+							<td><a href="#" class="btn btn-primary EditCoursesButton"
+								data-id="${course.idCourse}"> <span
+									class="glyphicon glyphicon-edit"></span> <span
+									class="hidden-xs"> Modifier </span>
+							</a> <a href="#" class="btn btn-danger DeleteCoursesButton"
+								data-id="${course.idCourse}"> <span
+									class="glyphicon glyphicon-remove-sign"></span> <span
+									class="hidden-xs"> Supprimer </span>
+							</a></td>
+						</sec:authorize>
 					</tr>
 				</c:forEach>
 			</tbody>

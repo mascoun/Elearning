@@ -17,6 +17,7 @@ public class Teacher extends User {
 	private String subject;
 	private Set<Classe> classes;
 	private Set<Course> courses;
+	private Set<Exercice> exercices;
 
 	@Column(name = "subject")
 	public String getSubject() {
@@ -43,6 +44,15 @@ public class Teacher extends User {
 
 	public void setCourses(Set<Course> courses) {
 		this.courses = courses;
+	}
+
+	@OneToMany(targetEntity = Exercice.class, mappedBy = "teacher", fetch = FetchType.LAZY)
+	public Set<Exercice> getExercices() {
+		return exercices;
+	}
+
+	public void setExercices(Set<Exercice> exercices) {
+		this.exercices = exercices;
 	}
 
 }

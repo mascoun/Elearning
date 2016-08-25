@@ -1,7 +1,5 @@
 package com.ensi.project.model;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,24 +10,24 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "courses", catalog = "elearning")
-public class Course {
-	private int idCourse;
+@Table(name = "exercices", catalog = "elearning")
+public class Exercice {
+	private int idExercice;
 	private String name;
 	private String description;
 	private Teacher teacher;
-	private Date date;
+	private String date;
 	private String link;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "course_id", unique = true, nullable = false)
-	public int getIdCourse() {
-		return idCourse;
+	@Column(name = "job_id", unique = true, nullable = false, insertable = false, updatable = false)
+	public int getIdExercice() {
+		return idExercice;
 	}
 
-	public void setIdCourse(int idCourse) {
-		this.idCourse = idCourse;
+	public void setIdExercice(int idExercice) {
+		this.idExercice = idExercice;
 	}
 
 	@Column(name = "name", nullable = false)
@@ -52,11 +50,11 @@ public class Course {
 	}
 
 	@Column(name = "date", nullable = false)
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
