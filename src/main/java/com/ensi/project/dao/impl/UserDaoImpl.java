@@ -3,9 +3,14 @@ package com.ensi.project.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
 import com.ensi.project.dao.UserDao;
+import com.ensi.project.model.Classe;
+import com.ensi.project.model.Student;
+import com.ensi.project.model.Teacher;
 import com.ensi.project.model.User;
 import com.ensi.project.model.UserRole;
 
@@ -29,12 +34,35 @@ public class UserDaoImpl implements UserDao {
 
 	}
 
-	public void save(User user,UserRole userRole) {
+	public void save(User user, UserRole userRole) {
 		getSessionFactory().getCurrentSession().persist(user);
 		getSessionFactory().getCurrentSession().persist(userRole);
 	}
 
 	public void delete(User user) {
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Student> findNoAffectedStudents() {
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Student.class);
+		criteria.add(Restrictions.isNull("classe"));
+		return criteria.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Teacher> findAllTeachersNotIn(Classe classe) {
+		Criteria criteria1 = getSessionFactory().getCurrentSession().createCriteria(Teacher.class);
+		criteria1.createAlias("classes", "classe");
+		criteria1.add(Restrictions.ne("classe.classeId", classe.getClasseId()));
+
+		Criteria criteria2 = getSessionFactory().getCurrentSession().createCriteria(Teacher.class);
+		criteria2.add(Restrictions.isEmpty("classes"));
+
+		List<Teacher> result = new ArrayList<>();
+		result.addAll(criteria1.list());
+		result.addAll(criteria2.list());
+		return result;
 
 	}
 
@@ -44,6 +72,26 @@ public class UserDaoImpl implements UserDao {
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+
+	@SuppressWarnings("unchecked")
+	public User findById(int id) {
+
+		List<User> users = new ArrayList<User>();
+
+		users = getSessionFactory().getCurrentSession().createQuery("from User where id=?").setParameter(0, id).list();
+
+		if (users.size() > 0) {
+			return users.get(0);
+		} else {
+			return null;
+		}
+
+	}
+
+	public User update(User user) {
+		getSessionFactory().getCurrentSession().merge(user);
+		return user;
 	}
 
 }

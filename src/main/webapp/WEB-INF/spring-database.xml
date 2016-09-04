@@ -51,7 +51,12 @@
 	<bean id="courseDao" class="com.ensi.project.dao.impl.CourseDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+	<bean id="classeDao" class="com.ensi.project.dao.impl.ClasseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="classeService" class="com.ensi.project.service.impl.ClasseServiceImpl">
+		<property name="classeDao" ref="classeDao" />
+	</bean>
 
 	<bean id="bCryptPasswordEncoder"
 		class=" org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />

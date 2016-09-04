@@ -2,9 +2,7 @@ package com.ensi.project.service.impl;
 
 import java.util.List;
 
-import com.ensi.project.dao.CourseDao;
 import com.ensi.project.dao.ExerciceDao;
-import com.ensi.project.model.Course;
 import com.ensi.project.model.Exercice;
 import com.ensi.project.service.ExerciceService;
 

@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ensi.project.model.Course;
 import com.ensi.project.model.Teacher;
@@ -103,7 +104,8 @@ public class CoursesController {
 		}
 	}
 
-	@RequestMapping(value = { "/courses/edit" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/courses/edit" }, method = RequestMethod.PUT)
+	@ResponseBody
 	public String modifyCourse(@Valid Course course, BindingResult result, ModelMap model,
 			@RequestParam(value = "id", required = true) int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -124,7 +126,8 @@ public class CoursesController {
 		return "ajax/success";
 	}
 
-	@RequestMapping(value = { "/courses/delete" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/courses/delete" }, method = RequestMethod.DELETE)
+	@ResponseBody
 	public String deleteCourse(ModelMap model, @RequestParam(value = "id", required = true) int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {

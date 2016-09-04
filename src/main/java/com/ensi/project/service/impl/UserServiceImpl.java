@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.ensi.project.dao.UserDao;
+import com.ensi.project.model.Classe;
+import com.ensi.project.model.Student;
+import com.ensi.project.model.Teacher;
 import com.ensi.project.model.UserRole;
 import com.ensi.project.service.UserService;
 
@@ -54,6 +57,14 @@ public class UserServiceImpl implements UserService {
 		return Result;
 	}
 
+	public List<Student> getNoAffectedStudents() {
+		return userDao.findNoAffectedStudents();
+	}
+
+	public List<Teacher> getAllTeachersNotIn(Classe classe) {
+		return userDao.findAllTeachersNotIn(classe);
+	}
+
 	public UserDao getUserDao() {
 		return userDao;
 	}
@@ -70,9 +81,16 @@ public class UserServiceImpl implements UserService {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
-	@Override
 	public com.ensi.project.model.User getUserByUsername(String username) {
 		return userDao.findByUserName(username);
+	}
+
+	public com.ensi.project.model.User getUserById(int id) {
+		return userDao.findById(id);
+	}
+
+	public void update(com.ensi.project.model.User user) {
+		userDao.update(user);
 	}
 
 }

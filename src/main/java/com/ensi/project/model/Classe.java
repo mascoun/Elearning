@@ -5,6 +5,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,7 +23,7 @@ public class Classe {
 	private Set<Student> students;
 	private Set<Teacher> teachers;
 
-	@OneToMany(targetEntity = Student.class, mappedBy = "classe", fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = Student.class, mappedBy = "classe", fetch = FetchType.EAGER)
 	public Set<Student> getStudents() {
 		return students;
 	}
@@ -30,7 +32,7 @@ public class Classe {
 		this.students = students;
 	}
 
-	@ManyToMany(targetEntity = Teacher.class, fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = Teacher.class, fetch = FetchType.EAGER)
 	@JoinTable(name = "classe_teacher", joinColumns = @JoinColumn(name = "classe_id") , inverseJoinColumns = @JoinColumn(name = "id") )
 	public Set<Teacher> getTeachers() {
 		return teachers;
@@ -50,6 +52,7 @@ public class Classe {
 	}
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "classe_id", insertable = false, updatable = false)
 	public int getClasseId() {
 		return classeId;

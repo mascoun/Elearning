@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Student extends User {
 	private Classe classe;
 
-	@ManyToOne
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "classe_id")
 	public Classe getClasse() {
 		return classe;

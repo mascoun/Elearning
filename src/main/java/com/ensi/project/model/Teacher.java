@@ -28,7 +28,7 @@ public class Teacher extends User {
 		this.subject = subject;
 	}
 
-	@ManyToMany(targetEntity = Classe.class, mappedBy = "teachers", fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = Classe.class, mappedBy = "teachers", fetch = FetchType.EAGER)
 	public Set<Classe> getClasses() {
 		return classes;
 	}
