@@ -1,5 +1,6 @@
 package com.ensi.project.controllers;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -12,12 +13,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ensi.project.model.Classe;
 import com.ensi.project.model.Course;
+import com.ensi.project.model.SeenCourse;
+import com.ensi.project.model.Student;
 import com.ensi.project.model.Teacher;
 import com.ensi.project.model.User;
 import com.ensi.project.service.CourseService;
@@ -37,16 +42,20 @@ public class CoursesController {
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			User user = userService.getUserByUsername(
 					((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
-			final List<Course> ListeCourses;
-			Teacher teacher = null;
-			try {
-				teacher = (Teacher) user;
-			} catch (ClassCastException exp) {
+			List<Course> ListeCourses = new ArrayList<>();
+			if (user instanceof Student) {
+				Student student = (Student) user;
+				Classe classe = student.getClasse();
+				if (classe != null) {
+					List<Teacher> teachers = new ArrayList<>(classe.getTeachers());
 
-			}
-			if (teacher == null) {
-				ListeCourses = courseService.getAllCourses();
-			} else {
+					for (int i = 0; i < teachers.size(); i++) {
+						ListeCourses.addAll(courseService.getAllCoursesByTeacher(teachers.get(i)));
+					}
+					ListeCourses = courseService.getAllCourses();
+				}
+			} else if (user instanceof Teacher) {
+				Teacher teacher = (Teacher) user;
 				ListeCourses = courseService.getAllCoursesByTeacher(teacher);
 			}
 			pModel.addAttribute("listeCourses", ListeCourses);
@@ -111,7 +120,7 @@ public class CoursesController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			if (result.hasErrors()) {
-				return "ajax/error";
+				return "ERROR";
 			}
 
 			User user = userService.getUserByUsername(
@@ -121,9 +130,9 @@ public class CoursesController {
 			course.setIdCourse(id);
 			courseService.updateCourse(course);
 		} else {
-			return "ajax/error";
+			return "ERROR";
 		}
-		return "ajax/success";
+		return "SUCCESS";
 	}
 
 	@RequestMapping(value = { "/courses/delete" }, method = RequestMethod.DELETE)
@@ -133,11 +142,35 @@ public class CoursesController {
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			courseService.deleteCourse(courseService.getCourseById(id));
 			if (courseService.getCourseById(id) != null) {
-				return "ajax/error";
+				return "ERROR";
 			}
 		} else {
-			return "ajax/error";
+			return "ERROR";
 		}
-		return "ajax/success";
+		return "SUCCESS";
+	}
+
+	@RequestMapping(value = { "/courses/seen/{id}" }, method = RequestMethod.PUT)
+	@ResponseBody
+	public String SeeCourse(@PathVariable(value = "id") int id, ModelMap model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			User user = userService.getUserByUsername(
+					((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
+			// List<Course> courses = new ArrayList<>();
+			// courses.addAll(courseService.getSeenCoursesByStudent((Student)
+			// user));
+			// Course course = courseService.getCourseById(id);
+			if (!courseService.hasSeenCourse(courseService.getCourseById(id), (Student) user)) {
+				SeenCourse seenCourse = new SeenCourse();
+				seenCourse.setCourse(courseService.getCourseById(id));
+				seenCourse.setStudent((Student) user);
+				courseService.SeenCourse(seenCourse);
+			}
+
+		} else {
+			return "ERROR";
+		}
+		return "SUCCESS";
 	}
 }

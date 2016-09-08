@@ -34,9 +34,7 @@ public class ClasseDaoImpl implements ClasseDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Classe> findAllClasses() {
-		System.out.println("DAO");
 		List<Classe> listClasses = new ArrayList<Classe>();
-		System.out.println(getSessionFactory().getCurrentSession().createQuery("from Classe"));
 		listClasses = getSessionFactory().getCurrentSession().createQuery("from Classe").list();
 		return listClasses;
 	}

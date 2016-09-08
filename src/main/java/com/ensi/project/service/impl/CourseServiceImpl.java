@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.ensi.project.dao.CourseDao;
 import com.ensi.project.model.Course;
+import com.ensi.project.model.SeenCourse;
+import com.ensi.project.model.Student;
 import com.ensi.project.model.Teacher;
 import com.ensi.project.service.CourseService;
 
@@ -35,6 +37,18 @@ public class CourseServiceImpl implements CourseService {
 		courseDao.deleteCourse(course);
 	}
 
+	public void SeenCourse(SeenCourse seenCourse) {
+		courseDao.Seen(seenCourse);
+	}
+
+	public boolean hasSeenCourse(Course course, Student student) {
+		return courseDao.hasSeen(course, student);
+	}
+
+	public List<Course> getSeenCoursesByStudent(Student student) {
+		return courseDao.findSeenCoursesByStudent(student);
+	}
+
 	public CourseDao getCourseDao() {
 		return courseDao;
 	}
@@ -46,4 +60,5 @@ public class CourseServiceImpl implements CourseService {
 	public List<Course> getAllCoursesByTeacher(Teacher teacher) {
 		return courseDao.findAllCoursesByTeacher(teacher);
 	}
+
 }

@@ -31,6 +31,8 @@
 				<value>com.ensi.project.model.Teacher</value>
 				<value>com.ensi.project.model.Classe</value>
 				<value>com.ensi.project.model.Exercice</value>
+				<value>com.ensi.project.model.Document</value>
+				<value>com.ensi.project.model.SeenCourse</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

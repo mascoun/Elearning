@@ -21,6 +21,10 @@
 	var="jasnyCss" />
 <spring:url value="/resources/template/css/bootstrap-dialog.min.css"
 	var="DialogCss" />
+
+<spring:url value="/resources/template/css/dataTables.bootstrap.min.css"
+	var="dataTablesBootstrapCss" />
+
 <spring:url value="/resources/template/css/app.css" var="appCss" />
 
 <spring:url value="/resources/template/js/flat-ui.min.js" var="flatuiJs" />
@@ -31,6 +35,10 @@
 	var="DialogJs" />
 <spring:url value="/resources/template/js/interface.js"
 	var="interfaceJs" />
+<spring:url value="/resources/template/js/jquery.dataTables.min.js"
+	var="dataTablesJs" />
+<spring:url value="/resources/template/js/dataTables.bootstrap.min.js"
+	var="dataTablesBootstrapJs" />
 <spring:url value="/resources/template/js/app.js" var="appJs" />
 
 <spring:url value="/resources/template/img/favicon.ico" var="favicon" />
@@ -39,6 +47,7 @@
 <link href="${bootstrapCss}" rel="stylesheet">
 <link href="${jasnyCss}" rel="stylesheet">
 <link href="${DialogCss}" rel="stylesheet">
+<link href="${dataTablesBootstrapCss}" rel="stylesheet">
 <link href="${appCss}" rel="stylesheet">
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -60,7 +69,10 @@
 									data-toggle="tooltip" data-placement="bottom" /></a></li>
 						</sec:authorize>
 						<li><a href="#" data-toggle="modal" data-target="#myModal"
-							id="CoursesButton"><img
+							id="CoursesButton" class="item"> <c:if
+									test="${UnseenCourse gt 0}">
+									<span class="notify-badge number red">${UnseenCourse}</span>
+								</c:if> <img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "
 								alt="Consulter les cours" title="Consulter les cours"
 								data-toggle="tooltip" data-placement="bottom" /></a></li>
@@ -68,10 +80,6 @@
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Exercices.png "
 								alt="Consulter les exercices" title="Consulter les exercices"
 								data-toggle="tooltip" data-placement="bottom" /></a></li>
-						<!-- <li class="active"><a href="#"><img
-								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Task.png "
-								alt="Exercices à faire" title="Exercices à faire"
-								data-toggle="tooltip" data-placement="bottom" /></a></li> -->
 						<li><a href="#"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Timing.png "
 								alt="Emplois du temps" title="Emplois du temps"
@@ -99,9 +107,13 @@
 	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script src="${flatuiJs}"></script>
 	<script src="${jasnyJs}"></script>
 	<script src="${DialogJs}"></script>
+	<script src="${dataTablesJs}"></script>
+	<script src="${dataTablesBootstrapJs}"></script>
 	<script src="${appJs}"></script>
 </body>
 </html>

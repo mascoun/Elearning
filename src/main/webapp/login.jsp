@@ -53,18 +53,15 @@
 					placeholder="Username" required autofocus> <input
 					type="password" name="password" id="inputPassword"
 					class="form-control" placeholder="Password" required>
-				<div id="remember" class="checkbox">
-					<label> <input type="checkbox" value="remember-me">
-						Remember me
-					</label>
-				</div>
 				<button class="btn btn-lg btn-primary btn-block btn-signin"
 					type="submit">Sign in</button>
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" />
 			</form>
 			<!-- /form -->
-			<a href="#" class="forgot-password"> Forgot the password? </a>
+			<a href="#" class="forgot-password"> Forgot the password? </a> <br />
+			<a href="${pageContext.servletContext.contextPath}/new">S'inscrire
+				à E-learning</a>
 		</div>
 		<!-- /card-container -->
 	</div>

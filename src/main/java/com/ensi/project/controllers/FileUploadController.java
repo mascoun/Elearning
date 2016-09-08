@@ -6,8 +6,6 @@ import java.io.FileOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +18,6 @@ import com.ensi.project.util.PDFToImageConverter;
 
 @Controller
 public class FileUploadController {
-
-	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
 	@Autowired
 	PDFToImageConverter pdf;
@@ -47,7 +43,8 @@ public class FileUploadController {
 				stream.write(bytes);
 				stream.close();
 
-				logger.info("Server File Location=" + serverFile.getAbsolutePath());
+				// logger.info("Server File Location=" +
+				// serverFile.getAbsolutePath());
 				pdf.convert(rootPath, name);
 				return name;
 			} catch (Exception e) {

@@ -1,5 +1,10 @@
 package com.ensi.project.controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -19,6 +24,10 @@ import com.ensi.project.service.UserService;
 
 @Controller
 public class UserController {
+
+	// private static final Logger logger =
+	// LoggerFactory.getLogger(FileUploadController.class);
+
 	@Autowired
 	UserService userService;
 
@@ -65,7 +74,25 @@ public class UserController {
 	}
 
 	@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
-	public String saveUser(@Valid User user, BindingResult result, ModelMap model) {
+	public String saveUser(@Valid User user, @RequestParam("passwordVerification") String VerifPassword,
+			BindingResult result, ModelMap model) {
+		DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
+		fromFormat.setLenient(false);
+		DateFormat toFormat = new SimpleDateFormat("dd-MM-yyyy");
+		toFormat.setLenient(false);
+		Date date = null;
+		try {
+			date = fromFormat.parse(user.getBirthday());
+		} catch (ParseException e) {
+			e.printStackTrace();
+			model.addAttribute("error", "Les deux mot de passe ne correspondent pas.");
+			return "registration";
+		}
+		user.setBirthday(toFormat.format(date));
+		if (!user.getPassword().equals(VerifPassword)) {
+			model.addAttribute("error", "Les deux mot de passe ne correspondent pas.");
+			return "registration";
+		}
 		if (result.hasErrors()) {
 			return "registration";
 		}

@@ -11,7 +11,7 @@
 	</h4>
 
 	<div class="alert-body">
-		<table class="table">
+		<table class="table" id="Table">
 			<thead>
 				<tr>
 					<th>Nom du cours</th>
@@ -28,7 +28,8 @@
 			<tbody>
 				<c:forEach items="${listeCourses}" var="course">
 					<tr>
-						<td><a href="<c:out value="${course.link}"></c:out>"><c:out
+						<td><a data-id="${course.idCourse}" data-toggle="See"
+							href="<c:out value="${course.link}"></c:out>"><c:out
 									value="${course.name}" /></a></td>
 						<sec:authorize access="hasRole('ROLE_STUDENT')">
 							<td class="hidden-xs"><c:out
@@ -52,12 +53,6 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<div class="flex">
-			<ul class="pagination pagination-custom">
-				<li class="active"><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-			</ul>
-		</div>
 	</div>
 </div>
 

@@ -2,6 +2,7 @@ package com.ensi.project.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ public class Classe {
 		this.students = students;
 	}
 
-	@ManyToMany(targetEntity = Teacher.class, fetch = FetchType.EAGER)
+	@ManyToMany(targetEntity = Teacher.class, cascade = CascadeType.ALL , fetch = FetchType.EAGER)
 	@JoinTable(name = "classe_teacher", joinColumns = @JoinColumn(name = "classe_id") , inverseJoinColumns = @JoinColumn(name = "id") )
 	public Set<Teacher> getTeachers() {
 		return teachers;

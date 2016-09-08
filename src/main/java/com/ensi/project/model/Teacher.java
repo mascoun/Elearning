@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "users", catalog = "elearning")
+@Table(name = "users")
 @DiscriminatorValue("Teacher")
 public class Teacher extends User {
 	private String subject;

@@ -1,5 +1,6 @@
 package com.ensi.project.controllers;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -96,40 +97,52 @@ public class AdminController {
 
 	@RequestMapping(value = "/admin/classe/{id}", method = RequestMethod.POST)
 	public String updateClasse(@PathVariable(value = "id") int id,
-			@RequestParam(value = "noAffectedStudents") List<String> NoAffectedStudents,
-			@RequestParam(value = "listeStudent") List<String> AffectedStudents,
-			@RequestParam(value = "allTeachers") List<String> NoAffectedTeacher,
-			@RequestParam(value = "listeTeacher") List<String> AffectedTeacher, ModelMap model) {
+			@RequestParam(value = "noAffectedStudents", required = false) List<String> NoAffectedStudents,
+			@RequestParam(value = "listeStudent", required = false) List<String> AffectedStudents,
+			@RequestParam(value = "allTeachers", required = false) List<String> NoAffectedTeacher,
+			@RequestParam(value = "listeTeacher", required = false) List<String> AffectedTeacher, ModelMap model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			if (NoAffectedStudents != null)
+			Classe classe = classeService.getClasseById(id);
+			Set<Student> students = new HashSet<Student>();
+			if (NoAffectedStudents != null && AffectedStudents.size() != 0)
 				for (int i = 0; i < NoAffectedStudents.size(); i++) {
 					Student student = (Student) userService.getUserById(Integer.parseInt(NoAffectedStudents.get(i)));
 					student.setClasse(null);
 					userService.update(student);
 				}
-			if (AffectedStudents != null)
+			if (AffectedStudents != null && AffectedStudents.size() != 0)
 				for (int i = 0; i < AffectedStudents.size(); i++) {
 					Student student = (Student) userService.getUserById(Integer.parseInt(AffectedStudents.get(i)));
+					students.add(student);
 					student.setClasse(classeService.getClasseById(id));
 					userService.update(student);
 				}
-			if (NoAffectedTeacher != null)
-				for (int i = 0; i < NoAffectedTeacher.size(); i++) {
-					Teacher teacher = (Teacher) userService.getUserById(Integer.parseInt(NoAffectedTeacher.get(i)));
-					Set<Classe> classes = teacher.getClasses();
-					classes.remove(classeService.getClasseById(id));
-					teacher.setClasses(classes);
-					userService.update(teacher);
-				}
-			if (AffectedTeacher != null)
+			Set<Teacher> teachers = new HashSet<Teacher>();
+
+			/*
+			 * if (NoAffectedTeacher != null && NoAffectedTeacher.size() != 0)
+			 * for (int i = 0; i < NoAffectedTeacher.size(); i++) { Teacher
+			 * teacher = (Teacher)
+			 * userService.getUserById(Integer.parseInt(NoAffectedTeacher.get(i)
+			 * )); teachers.remove(teacher); // Set<Classe> classes =
+			 * teacher.getClasses(); //
+			 * classes.remove(classeService.getClasseById(id)); ///
+			 * teacher.setClasses(classes); // userService.update(teacher);
+			 * 
+			 * }
+			 */
+			if (AffectedTeacher != null && AffectedTeacher.size() != 0)
 				for (int i = 0; i < AffectedTeacher.size(); i++) {
 					Teacher teacher = (Teacher) userService.getUserById(Integer.parseInt(AffectedTeacher.get(i)));
-					Set<Classe> classes = teacher.getClasses();
-					classes.add(classeService.getClasseById(id));
-					teacher.setClasses(classes);
-					userService.update(teacher);
+					teachers.add(teacher);
+					// classes.add(classeService.getClasseById(id));
+					// teacher.setClasses(classes);
+					// userService.update(teacher);
 				}
+			//classe.setStudents(students);
+			classe.setTeachers(teachers);
+			classeService.updateClasse(classe);
 			return "redirect:/admin/classe/{id}";
 		} else {
 			return "redirect:/login";

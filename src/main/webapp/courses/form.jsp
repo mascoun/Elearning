@@ -12,7 +12,7 @@
 
 	<div class="alert-body col-md-12">
 		<sec:authorize access="hasRole('ROLE_TEACHER')">
-			<form:form method="POST" modelAttribute="course" id="fmUpload">
+			<form:form method="POST" modelAttribute="course" id="course">
 				<div class="col-md-6">
 					<div class="input-group">
 						<label for="name">Nom du cours: </label>
@@ -39,9 +39,9 @@
 							class="fileinput-new hidden">Selectionner</span><span
 							class="fileinput-exists hidden">Changer</span> <input type="file"
 							id="fileInput" name="file" class=" form-control"
-							accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/pdf" />
-							<input type="hidden" name="filename" id="fileName" /> </span> <a
-							href="#" class="btn btn-default fileinput-exists hidden"
+							accept="application/pdf" /> <input type="hidden" name="filename"
+							id="fileName" /> </span> <a href="#"
+							class="btn btn-default fileinput-exists hidden"
 							data-dismiss="fileinput">Remove</a> <br />
 						<div class="fileinput-preview thumbnail" data-trigger="fileinput"
 							style="height: 200px; width: 100%;"></div>
@@ -50,8 +50,9 @@
 				<hr />
 				<div class="col-md-12" style="text-align: center;">
 					<form:input class="form-control hidden" required="true" path="link"
-						id="link" value="www.google.com" />
-
+						id="link" value="" />
+					<form:input class="form-control hidden" required="true"
+						path="photo" id="photo" value="" />
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" /> <input type="submit"
 						class="btn btn-primary" />

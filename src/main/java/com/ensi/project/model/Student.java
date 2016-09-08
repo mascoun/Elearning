@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "users", catalog = "elearning")
+@Table(name = "users")
 @DiscriminatorValue("Student")
 public class Student extends User {
 	private Classe classe;

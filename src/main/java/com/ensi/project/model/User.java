@@ -8,6 +8,8 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -16,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "users", catalog = "elearning")
+@Table(name = "users")
 @DiscriminatorColumn(name = "TYPE_USER", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
@@ -47,6 +49,7 @@ public class User {
 	}
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", insertable = false, updatable = false)
 	public int getId() {
 		return id;

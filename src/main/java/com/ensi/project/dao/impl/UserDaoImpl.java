@@ -1,7 +1,9 @@
 package com.ensi.project.dao.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -59,10 +61,10 @@ public class UserDaoImpl implements UserDao {
 		Criteria criteria2 = getSessionFactory().getCurrentSession().createCriteria(Teacher.class);
 		criteria2.add(Restrictions.isEmpty("classes"));
 
-		List<Teacher> result = new ArrayList<>();
+		Set<Teacher> result = new HashSet<>();
 		result.addAll(criteria1.list());
 		result.addAll(criteria2.list());
-		return result;
+		return new ArrayList<>(result);
 
 	}
 
@@ -93,5 +95,4 @@ public class UserDaoImpl implements UserDao {
 		getSessionFactory().getCurrentSession().merge(user);
 		return user;
 	}
-
 }

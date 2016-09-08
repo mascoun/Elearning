@@ -8,6 +8,10 @@
 	<http auto-config="true" use-expressions="true" pattern="/uploadFile">
 		<csrf disabled="true" />
 	</http>
+	<http auto-config="true" use-expressions="true" pattern="/courses/**">
+		<csrf disabled="true" />
+	</http>
+
 	<!-- enable use-expressions -->
 	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />

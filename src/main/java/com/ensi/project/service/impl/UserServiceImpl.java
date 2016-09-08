@@ -93,4 +93,12 @@ public class UserServiceImpl implements UserService {
 		userDao.update(user);
 	}
 
+	public void update(Student student) {
+		userDao.update(student);
+
+	}
+
+	public void update(Teacher teacher) {
+		userDao.update(teacher);
+	}
 }
