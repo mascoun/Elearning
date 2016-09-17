@@ -95,4 +95,11 @@ public class UserDaoImpl implements UserDao {
 		getSessionFactory().getCurrentSession().merge(user);
 		return user;
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<User> findAllUsers() {
+		List<User> users = new ArrayList<User>();
+		users.addAll(getSessionFactory().getCurrentSession().createCriteria(User.class).list());
+		return users;
+	}
 }

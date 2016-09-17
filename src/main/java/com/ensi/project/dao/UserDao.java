@@ -22,4 +22,6 @@ public interface UserDao {
 	List<Teacher> findAllTeachersNotIn(Classe classe);
 
 	User update(User user);
+
+	List<User> findAllUsers();
 }

@@ -16,16 +16,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ensi.project.model.Classe;
 import com.ensi.project.model.Course;
+import com.ensi.project.model.Exercice;
 import com.ensi.project.model.Student;
 import com.ensi.project.model.Teacher;
 import com.ensi.project.model.User;
 import com.ensi.project.service.CourseService;
+import com.ensi.project.service.ExerciceService;
 import com.ensi.project.service.UserService;
 
 @Controller
 public class HomeController {
 	@Autowired
 	CourseService courseService;
+
+	@Autowired
+	ExerciceService exerciceService;
 
 	@Autowired
 	UserService userService;
@@ -40,6 +45,7 @@ public class HomeController {
 				User user = userService.getUserByUsername(
 						((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
 				List<Course> ListeCourses = new ArrayList<>();
+				List<Exercice> ListeExercices = new ArrayList<>();
 				if (user instanceof Student) {
 					Student student = (Student) user;
 					Classe classe = student.getClasse();
@@ -50,9 +56,14 @@ public class HomeController {
 							ListeCourses.addAll(courseService.getAllCoursesByTeacher(teachers.get(i)));
 						}
 						ListeCourses = courseService.getAllCourses();
+						ListeExercices = exerciceService.getAllExercices();
 						List<Course> ListeSeenCourses = new ArrayList<>();
+						List<Exercice> ListeSeenExercices = new ArrayList<>();
 						ListeSeenCourses.addAll(courseService.getSeenCoursesByStudent(student));
+						ListeSeenExercices.addAll(exerciceService.getSeenExercicesByStudent(student));
 						pModel.addAttribute("UnseenCourse", (int) (ListeCourses.size() - ListeSeenCourses.size()));
+						pModel.addAttribute("UnseenExercice",
+								(int) (ListeExercices.size() - ListeSeenExercices.size()));
 					}
 				}
 				return "home";

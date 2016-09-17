@@ -12,17 +12,17 @@
 
 	<div class="alert-body col-md-12">
 		<sec:authorize access="hasRole('ROLE_TEACHER')">
-			<form:form method="POST" modelAttribute="course" id="course">
+			<form:form method="POST" modelAttribute="exercice" id="add">
 				<div class="col-md-6">
 					<div class="input-group">
-						<label for="name">Nom du cours: </label>
+						<label for="name">Nom de l'exercice: </label>
 					</div>
 					<form:input class="form-control" required="true" type="text"
 						path="name" id="name" />
 
 					<div class="input-group">
 
-						<label for="description">Description du cours: </label>
+						<label for="description">Description de l'exercice: </label>
 					</div>
 					<form:textarea class="form-control" required="true"
 						path="description" id="description"

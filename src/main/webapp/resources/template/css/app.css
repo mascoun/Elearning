@@ -9,6 +9,11 @@ body, html {
 	background-repeat: no-repeat;
 	/* background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33)) */
 	background-color: #ECF0F1;
+	background: url('http://godlywoodstudio.org/wp-content/uploads/2014/11/website-background-imac-blue.jpg') no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .card-container.card {
@@ -278,12 +283,22 @@ body, html {
 100%
 {
 -moz-transform
+
+
 :
+
  
+
 rotate
-(359deg);
+
+
+(359
+deg
+);
+
 
   
+
 }
 }
 @
@@ -294,12 +309,22 @@ rotate
 100%
 {
 -webkit-transform
+
+
 :
+
  
+
 rotate
-(359deg);
+
+
+(359
+deg
+);
+
 
   
+
 }
 }
 @
@@ -310,12 +335,22 @@ rotate
 100%
 {
 -o-transform
+
+
 :
+
  
+
 rotate
-(359deg);
+
+
+(359
+deg
+);
+
 
   
+
 }
 }
 @
@@ -327,19 +362,39 @@ keyframes spin { 0% {
 100%
 {
 -webkit-transform
+
+
 :
+
  
+
 rotate
-(359deg);
+
+
+(359
+deg
+);
+
 
     
+
 transform
+
+
 :
+
  
+
 rotate
-(359deg);
+
+
+(359
+deg
+);
+
 
   
+
 }
 }
 .gly-rotate-90 {

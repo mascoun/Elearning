@@ -32,7 +32,8 @@ public class FileUploadController {
 				byte[] bytes = file.getBytes();
 
 				// Creating the directory to store file
-				String rootPath = request.getSession().getServletContext().getRealPath("/");
+				// request.getSession().getServletContext().getRealPath("/");
+				String rootPath = request.getSession().getServletContext().getInitParameter("file-upload");
 				File dir = new File(rootPath + File.separator + "upload" + File.separator + "documents");
 				if (!dir.exists())
 					dir.mkdirs();

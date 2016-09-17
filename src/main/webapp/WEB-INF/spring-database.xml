@@ -33,6 +33,8 @@
 				<value>com.ensi.project.model.Exercice</value>
 				<value>com.ensi.project.model.Document</value>
 				<value>com.ensi.project.model.SeenCourse</value>
+				<value>com.ensi.project.model.SeenExercice</value>
+				<value>com.ensi.project.model.Message</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -53,9 +55,20 @@
 	<bean id="courseDao" class="com.ensi.project.dao.impl.CourseDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="exerciceDao" class="com.ensi.project.dao.impl.ExerciceDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="classeDao" class="com.ensi.project.dao.impl.ClasseDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="messageDao" class="com.ensi.project.dao.impl.MessageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="messageService" class="com.ensi.project.service.impl.MessageServiceImpl">
+		<property name="messageDao" ref="messageDao" />
+	</bean>
+
 	<bean id="classeService" class="com.ensi.project.service.impl.ClasseServiceImpl">
 		<property name="classeDao" ref="classeDao" />
 	</bean>
@@ -69,6 +82,9 @@
 	</bean>
 	<bean id="courseService" class="com.ensi.project.service.impl.CourseServiceImpl">
 		<property name="courseDao" ref="courseDao" />
+	</bean>
+	<bean id="exerciceService" class="com.ensi.project.service.impl.ExerciceServiceImpl">
+		<property name="exerciceDao" ref="exerciceDao" />
 	</bean>
 	<!-- MUST have transaction manager, using aop and aspects -->
 	<bean id="transactionManager"

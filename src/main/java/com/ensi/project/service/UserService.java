@@ -14,10 +14,6 @@ public interface UserService extends UserDetailsService {
 
 	public void update(User user);
 
-	public void update(Student student);
-
-	public void update(Teacher teacher);
-
 	public User getUserByUsername(String username);
 
 	public User getUserById(int id);
@@ -25,4 +21,6 @@ public interface UserService extends UserDetailsService {
 	public List<Student> getNoAffectedStudents();
 
 	public List<Teacher> getAllTeachersNotIn(Classe classe);
+
+	public List<User> getAllUsers();
 }

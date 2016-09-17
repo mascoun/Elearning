@@ -20,29 +20,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ensi.project.model.Classe;
-import com.ensi.project.model.Course;
-import com.ensi.project.model.SeenCourse;
+import com.ensi.project.model.Exercice;
+import com.ensi.project.model.SeenExercice;
 import com.ensi.project.model.Student;
 import com.ensi.project.model.Teacher;
 import com.ensi.project.model.User;
-import com.ensi.project.service.CourseService;
+import com.ensi.project.service.ExerciceService;
 import com.ensi.project.service.UserService;
 
 @Controller
-public class CoursesController {
+public class ExercicesController {
 	@Autowired
-	CourseService courseService;
+	ExerciceService exerciceService;
 
 	@Autowired
 	UserService userService;
 
-	@RequestMapping(value = { "/courses" }, method = RequestMethod.GET)
-	public String CoursesPage(final ModelMap pModel) {
+	@RequestMapping(value = { "/exercices" }, method = RequestMethod.GET)
+	public String ExercicesPage(final ModelMap pModel) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			User user = userService.getUserByUsername(
 					((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
-			List<Course> ListeCourses = new ArrayList<>();
+			List<Exercice> ListeExercices = new ArrayList<>();
 			if (user instanceof Student) {
 				Student student = (Student) user;
 				Classe classe = student.getClasse();
@@ -50,28 +50,28 @@ public class CoursesController {
 					List<Teacher> teachers = new ArrayList<>(classe.getTeachers());
 
 					for (int i = 0; i < teachers.size(); i++) {
-						ListeCourses.addAll(courseService.getAllCoursesByTeacher(teachers.get(i)));
+						ListeExercices.addAll(exerciceService.getAllExercicesByTeacher(teachers.get(i)));
 					}
-					ListeCourses = courseService.getAllCourses();
+					ListeExercices = exerciceService.getAllExercices();
 				}
 			} else if (user instanceof Teacher) {
 				Teacher teacher = (Teacher) user;
-				ListeCourses = courseService.getAllCoursesByTeacher(teacher);
+				ListeExercices = exerciceService.getAllExercicesByTeacher(teacher);
 			}
-			pModel.addAttribute("listeCourses", ListeCourses);
-			return "courses";
+			pModel.addAttribute("listeExercice", ListeExercices);
+			return "exercices";
 		} else {
 			return "redirect:/login";
 		}
 
 	}
 
-	@RequestMapping(value = { "/courses/{id}" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/exercices/{id}" }, method = RequestMethod.GET)
 	public String viewCourse(@PathVariable(value = "id") int id, final ModelMap pModel) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			Course course = courseService.getCourseById(id);
-			pModel.addAttribute("document", course);
+			Exercice exercice = exerciceService.getExerciceById(id);
+			pModel.addAttribute("document", exercice);
 			return "view";
 		} else {
 			return "redirect:/login";
@@ -79,22 +79,22 @@ public class CoursesController {
 
 	}
 
-	@RequestMapping(value = { "/courses/new" }, method = RequestMethod.GET)
-	public String newCourse(ModelMap model) {
+	@RequestMapping(value = { "/exercices/new" }, method = RequestMethod.GET)
+	public String newExercice(ModelMap model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			Course course = new Course();
-			model.addAttribute("course", course);
+			Exercice exercice = new Exercice();
+			model.addAttribute("exercice", exercice);
 			// UserDetails userDetails = (UserDetails) auth.getDetails();
 			// model.addAttribute("user", user);
-			return "form/course";
+			return "form/exercice";
 		} else {
 			return "ajax/error";
 		}
 	}
 
-	@RequestMapping(value = { "/courses/new" }, method = RequestMethod.POST)
-	public String saveCourse(@Valid Course course, BindingResult result, ModelMap model) {
+	@RequestMapping(value = { "/exercices/new" }, method = RequestMethod.POST)
+	public String saveExercice(@Valid Exercice exercice, BindingResult result, ModelMap model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			if (result.hasErrors()) {
@@ -102,33 +102,33 @@ public class CoursesController {
 			}
 			User user = userService.getUserByUsername(
 					((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
-			course.setTeacher((Teacher) user);
-			course.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-			courseService.createCourse(course);
+			exercice.setTeacher((Teacher) user);
+			exercice.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			exerciceService.createExercice(exercice);
 		} else {
 			return "ajax/error";
 		}
 		return "ajax/success";
 	}
 
-	@RequestMapping(value = { "/courses/edit" }, method = RequestMethod.GET)
-	public String editCourse(ModelMap model, @RequestParam(value = "id") int id) {
+	@RequestMapping(value = { "/exercices/edit" }, method = RequestMethod.GET)
+	public String editExercice(ModelMap model, @RequestParam(value = "id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			Course course = courseService.getCourseById(id);
-			if (course != null)
-				model.addAttribute("course", course);
+			Exercice exercice = exerciceService.getExerciceById(id);
+			if (exercice != null)
+				model.addAttribute("exercice", exercice);
 			else
 				return "ajax/error";
-			return "form/course";
+			return "form/exercice";
 		} else {
 			return "ajax/error";
 		}
 	}
 
-	@RequestMapping(value = { "/courses/edit" }, method = RequestMethod.PUT)
+	@RequestMapping(value = { "/exercices/edit" }, method = RequestMethod.PUT)
 	@ResponseBody
-	public String modifyCourse(@Valid Course course, BindingResult result, ModelMap model,
+	public String modifyExercice(@Valid Exercice exercice, BindingResult result, ModelMap model,
 			@RequestParam(value = "id", required = true) int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -138,23 +138,23 @@ public class CoursesController {
 
 			User user = userService.getUserByUsername(
 					((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
-			course.setTeacher((Teacher) user);
-			course.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-			course.setIdCourse(id);
-			courseService.updateCourse(course);
+			exercice.setTeacher((Teacher) user);
+			exercice.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			exercice.setIdExercice(id);
+			exerciceService.updateExercice(exercice);
 		} else {
 			return "ERROR";
 		}
 		return "SUCCESS";
 	}
 
-	@RequestMapping(value = { "/courses/delete" }, method = RequestMethod.DELETE)
+	@RequestMapping(value = { "/exercices/delete" }, method = RequestMethod.DELETE)
 	@ResponseBody
-	public String deleteCourse(ModelMap model, @RequestParam(value = "id", required = true) int id) {
+	public String deleteExercice(ModelMap model, @RequestParam(value = "id", required = true) int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			courseService.deleteCourse(courseService.getCourseById(id));
-			if (courseService.getCourseById(id) != null) {
+			exerciceService.deleteExercice(exerciceService.getExerciceById(id));
+			if (exerciceService.getExerciceById(id) != null) {
 				return "ERROR";
 			}
 		} else {
@@ -163,24 +163,19 @@ public class CoursesController {
 		return "SUCCESS";
 	}
 
-	@RequestMapping(value = { "/courses/seen/{id}" }, method = RequestMethod.PUT)
+	@RequestMapping(value = { "/exercices/seen/{id}" }, method = RequestMethod.PUT)
 	@ResponseBody
-	public String SeeCourse(@PathVariable(value = "id") int id, ModelMap model) {
+	public String SeeExercice(@PathVariable(value = "id") int id, ModelMap model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			User user = userService.getUserByUsername(
 					((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
-			// List<Course> courses = new ArrayList<>();
-			// courses.addAll(courseService.getSeenCoursesByStudent((Student)
-			// user));
-			// Course course = courseService.getCourseById(id);
 			if (user instanceof Student) {
-
-				if (!courseService.hasSeenCourse(courseService.getCourseById(id), (Student) user)) {
-					SeenCourse seenCourse = new SeenCourse();
-					seenCourse.setCourse(courseService.getCourseById(id));
-					seenCourse.setStudent((Student) user);
-					courseService.SeenCourse(seenCourse);
+				if (!exerciceService.hasSeenExercice(exerciceService.getExerciceById(id), (Student) user)) {
+					SeenExercice seenExercice = new SeenExercice();
+					seenExercice.setExercice(exerciceService.getExerciceById(id));
+					seenExercice.setStudent((Student) user);
+					exerciceService.SeenExercice(seenExercice);
 				}
 			}
 		} else {

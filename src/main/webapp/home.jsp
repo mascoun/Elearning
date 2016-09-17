@@ -15,19 +15,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>E-learning</title>
+
 <spring:url value="/resources/template/css/bootstrap.min.css"
 	var="bootstrapCss" />
+<spring:url value="/resources/template/js/bootstrap.min.js"
+	var="bootstrapJs" />
+
 <spring:url value="/resources/template/css/jasny-bootstrap.min.css"
 	var="jasnyCss" />
 <spring:url value="/resources/template/css/bootstrap-dialog.min.css"
 	var="DialogCss" />
 
-<spring:url value="/resources/template/css/dataTables.bootstrap.min.css"
-	var="dataTablesBootstrapCss" />
 
-<spring:url value="/resources/template/css/app.css" var="appCss" />
 
-<spring:url value="/resources/template/js/flat-ui.min.js" var="flatuiJs" />
+
+
+
 
 <spring:url value="/resources/template/js/jasny-bootstrap.min.js"
 	var="jasnyJs" />
@@ -35,11 +38,51 @@
 	var="DialogJs" />
 <spring:url value="/resources/template/js/interface.js"
 	var="interfaceJs" />
+<%-- DATATABLE JAVASCRIPT INCLUDES  --%>
+
 <spring:url value="/resources/template/js/jquery.dataTables.min.js"
 	var="dataTablesJs" />
 <spring:url value="/resources/template/js/dataTables.bootstrap.min.js"
 	var="dataTablesBootstrapJs" />
+<spring:url value="/resources/template/js/dataTables.buttons.min.js"
+	var="dataTablesButtonsJs" />
+<spring:url value="/resources/template/js/buttons.bootstrap.min.js"
+	var="dataTablesBootstrapButtonsJs" />
+
+<%-- END DATATABLE JAVASCRIPT INCLUDES --%>
+
+<%-- DATATABLE CSS INCLUDES  --%>
+
+<spring:url value="/resources/template/css/dataTables.bootstrap.min.css"
+	var="dataTablesBootstrapCss" />
+<spring:url value="/resources/template/css/buttons.bootstrap.min.css"
+	var="dataTablesButtonsCss" />
+
+<%-- END DATATABLE CSS INCLUDES  --%>
+
+<%-- AUTOCOMPLETE JAVASCRIPT INCLUDES  --%>
+
+<spring:url value="/resources/template/js/select2.min.js"
+	var="select2Js" />
+
+<%-- END AUTOCOMPLETE JAVASCRIPT INCLUDES --%>
+
+<%-- AUTOCOMPLETE CSS INCLUDES  --%>
+
+<spring:url value="/resources/template/css/select2.min.css"
+	var="select2Css" />
+
+<spring:url value="/resources/template/css/select2-bootstrap.min.css"
+	var="select2BootstrapCss" />
+<%-- END AUTOCOMPLETE CSS INCLUDES  --%>
+
+
+<%-- APP CSS/JAVASCRIPT INCLUDES  --%>
+
 <spring:url value="/resources/template/js/app.js" var="appJs" />
+<spring:url value="/resources/template/css/app.css" var="appCss" />
+
+<%-- END APP CSS/JAVASCRIPT INCLUDES  --%>
 
 <spring:url value="/resources/template/img/favicon.ico" var="favicon" />
 <link rel="icon" href="${favicon}" />
@@ -48,6 +91,9 @@
 <link href="${jasnyCss}" rel="stylesheet">
 <link href="${DialogCss}" rel="stylesheet">
 <link href="${dataTablesBootstrapCss}" rel="stylesheet">
+<link href="${dataTablesButtonsCss}" rel="stylesheet">
+<link href="${select2Css}" rel="stylesheet">
+<link href="${select2BootstrapCss}" rel="stylesheet">
 <link href="${appCss}" rel="stylesheet">
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -76,15 +122,24 @@
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "
 								alt="Consulter les cours" title="Consulter les cours"
 								data-toggle="tooltip" data-placement="bottom" /></a></li>
-						<li><a href="#"><img
+						<sec:authorize access="hasRole('ROLE_TEACHER')">
+							<li><a href="#" data-toggle="modal" data-target="#myModal"
+								id="AddExercicesButton" class="item"> <span
+									class="notify-badge green glyphicon glyphicon-plus"></span><img
+									src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Exercices.png "
+									alt="Ajouter un exercice" title="Ajouter un exercice"
+									data-toggle="tooltip" data-placement="bottom" /></a></li>
+						</sec:authorize>
+						<li><a href="#" data-toggle="modal" data-target="#myModal"
+							id="ExercicesButton"> <c:if test="${UnseenExercice gt 0}">
+									<span class="notify-badge number red">${UnseenExercice}</span>
+								</c:if> <img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Exercices.png "
 								alt="Consulter les exercices" title="Consulter les exercices"
 								data-toggle="tooltip" data-placement="bottom" /></a></li>
-						<li><a href="#"><img
-								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Timing.png "
-								alt="Emplois du temps" title="Emplois du temps"
-								data-toggle="tooltip" data-placement="bottom" /></a></li>
-						<li><a href="#"><img
+
+						<li><a href="#" data-toggle="modal" data-target="#myModal"
+							id="MessageButton"><img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "
 								alt="Messagerie" title="Messagerie" data-toggle="tooltip"
 								data-placement="bottom" /></a></li>
@@ -108,12 +163,15 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-	<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-	<script src="${flatuiJs}"></script>
+	<!--  <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>-->
+	<script src="${bootstrapJs}"></script>
 	<script src="${jasnyJs}"></script>
 	<script src="${DialogJs}"></script>
 	<script src="${dataTablesJs}"></script>
 	<script src="${dataTablesBootstrapJs}"></script>
+	<script src="${dataTablesButtonsJs}"></script>
+	<script src="${dataTablesBootstrapButtonsJs}"></script>
+	<script src="${select2Js}"></script>
 	<script src="${appJs}"></script>
 </body>
 </html>

@@ -65,6 +65,14 @@ public class UserServiceImpl implements UserService {
 		return userDao.findAllTeachersNotIn(classe);
 	}
 
+	public void update(com.ensi.project.model.User user) {
+		userDao.update(user);
+	}
+
+	public List<com.ensi.project.model.User> getAllUsers() {
+		return userDao.findAllUsers();
+	}
+
 	public UserDao getUserDao() {
 		return userDao;
 	}
@@ -87,18 +95,5 @@ public class UserServiceImpl implements UserService {
 
 	public com.ensi.project.model.User getUserById(int id) {
 		return userDao.findById(id);
-	}
-
-	public void update(com.ensi.project.model.User user) {
-		userDao.update(user);
-	}
-
-	public void update(Student student) {
-		userDao.update(student);
-
-	}
-
-	public void update(Teacher teacher) {
-		userDao.update(teacher);
 	}
 }
