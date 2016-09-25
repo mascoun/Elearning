@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,6 +85,7 @@ public class MessagingController {
 				message_tmp.setFrom(user);
 				message_tmp.setTo(userService.getUserById(Integer.parseInt(ids.get(i))));
 				message_tmp.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+				message_tmp.setSeen(false);
 				messages.add(message_tmp);
 			}
 			messageService.sendMessage(messages);
@@ -93,4 +95,31 @@ public class MessagingController {
 		}
 
 	}
+
+	@RequestMapping(value = { "/messages/seen/{id}" }, method = RequestMethod.PUT)
+	@ResponseBody
+	public String SeenMessage(@PathVariable(value = "id") int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			messageService.seenMessage(messageService.getMessageById(id));
+			return "SUCCESS";
+		} else {
+			return "ERROR";
+		}
+
+	}
+
+	@RequestMapping(value = { "/messages/{id}" }, method = RequestMethod.GET)
+	public String viewMessage(@PathVariable(value = "id") int id, ModelMap pmodel) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			Message message = messageService.getMessageById(id);
+			pmodel.addAttribute("message", message);
+			return "message";
+		} else {
+			return "ajax/error";
+		}
+
+	}
+
 }

@@ -1,10 +1,11 @@
 package com.ensi.project.controllers;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ensi.project.model.Student;
+import com.ensi.project.model.Teacher;
 import com.ensi.project.model.User;
 import com.ensi.project.service.UserService;
 
@@ -75,20 +78,26 @@ public class UserController {
 
 	@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
 	public String saveUser(@Valid User user, @RequestParam("passwordVerification") String VerifPassword,
+			@RequestParam(value = "type") String type, @RequestParam(value = "subject") String subject,
 			BindingResult result, ModelMap model) {
-		DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
-		fromFormat.setLenient(false);
-		DateFormat toFormat = new SimpleDateFormat("dd-MM-yyyy");
-		toFormat.setLenient(false);
-		Date date = null;
+		Date fromFormat = null;
 		try {
-			date = fromFormat.parse(user.getBirthday());
+			fromFormat = new SimpleDateFormat("yyyy-MM-dd").parse(user.getBirthday());
 		} catch (ParseException e) {
-			e.printStackTrace();
-			model.addAttribute("error", "Les deux mot de passe ne correspondent pas.");
+			model.addAttribute("error", "Date de naissance erroné.");
 			return "registration";
 		}
-		user.setBirthday(toFormat.format(date));
+		String toFormat = new SimpleDateFormat("dd-MM-yyyy").format(fromFormat);
+		try {
+			InternetAddress emailAddr = new InternetAddress(user.getUsername());
+			emailAddr.validate();
+		} catch (AddressException ex) {
+			model.addAttribute("error", "Email erroné.");
+			return "registration";
+
+		}
+		user.setEnabled(false);
+		user.setBirthday(toFormat);
 		if (!user.getPassword().equals(VerifPassword)) {
 			model.addAttribute("error", "Les deux mot de passe ne correspondent pas.");
 			return "registration";
@@ -96,7 +105,21 @@ public class UserController {
 		if (result.hasErrors()) {
 			return "registration";
 		}
-		userService.save(user);
+		if (type.equals("Student")) {
+			Student student = new Student();
+			student.setUsername(user.getUsername());
+			student.setBirthday(user.getBirthday());
+			student.setPassword(user.getPassword());
+			userService.save(student);
+		} else if (type.equals("Teacher")) {
+			Teacher teacher = new Teacher();
+			teacher.setUsername(user.getUsername());
+			teacher.setBirthday(user.getBirthday());
+			teacher.setPassword(user.getPassword());
+			teacher.setSubject(subject);
+			userService.save(teacher);
+		}
+		model.addAttribute("msg", "Compte créé et doit etre vérifier par un administrateur.");
 		return "redirect:login";
 	}
 

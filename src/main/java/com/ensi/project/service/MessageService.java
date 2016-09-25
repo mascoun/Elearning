@@ -12,4 +12,9 @@ public interface MessageService {
 
 	public List<Message> getAllMessages(User user);
 
+	public List<Message> getunSeenMessages(User user);
+
+	public Message getMessageById(int id);
+
+	public void seenMessage(Message message);
 }

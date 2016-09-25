@@ -92,6 +92,7 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 
+
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
@@ -99,7 +100,9 @@
 			<tx:method name="*" />
 		</tx:attributes>
 	</tx:advice>
-
+	
+	<tx:annotation-driven />
+	
 	<aop:config>
 		<aop:pointcut id="userServicePointCut"
 			expression="execution(* com.ensi.project.service.*Service.*(..))" />

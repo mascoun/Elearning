@@ -23,4 +23,8 @@ public interface UserService extends UserDetailsService {
 	public List<Teacher> getAllTeachersNotIn(Classe classe);
 
 	public List<User> getAllUsers();
+
+	public List<User> getNotEnabledUsers();
+
+	public void delete(User user);
 }

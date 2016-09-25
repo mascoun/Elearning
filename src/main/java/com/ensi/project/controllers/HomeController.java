@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.ensi.project.model.Classe;
 import com.ensi.project.model.Course;
 import com.ensi.project.model.Exercice;
+import com.ensi.project.model.Message;
 import com.ensi.project.model.Student;
 import com.ensi.project.model.Teacher;
 import com.ensi.project.model.User;
 import com.ensi.project.service.CourseService;
 import com.ensi.project.service.ExerciceService;
+import com.ensi.project.service.MessageService;
 import com.ensi.project.service.UserService;
 
 @Controller
@@ -31,6 +33,9 @@ public class HomeController {
 
 	@Autowired
 	ExerciceService exerciceService;
+
+	@Autowired
+	MessageService messageService;
 
 	@Autowired
 	UserService userService;
@@ -46,6 +51,8 @@ public class HomeController {
 						((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
 				List<Course> ListeCourses = new ArrayList<>();
 				List<Exercice> ListeExercices = new ArrayList<>();
+				List<Message> UnseenMessage = new ArrayList<>(messageService.getunSeenMessages(user));
+				pModel.addAttribute("UnseenMessages", UnseenMessage.size());
 				if (user instanceof Student) {
 					Student student = (Student) user;
 					Classe classe = student.getClasse();

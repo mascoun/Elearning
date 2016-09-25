@@ -47,29 +47,40 @@
 </head>
 <body>
 	<div class="container">
-		<h2>Registration Form</h2>
+
 		<div class="col-md-6 col-md-offset-3">
 			<div class="card card-container">
+				<h2>Formulaire d'inscription</h2>
 				<c:if test="${not empty error}">
 					<div class="alert alert-danger">${error}</div>
 				</c:if>
 				<form:form method="POST" modelAttribute="user" class="form-signin">
-					<form:input class="form-control" type="text"
-						placeholder="Nom d'utilisateur" path="username" />
-					<form:input class="form-control" type="text" placeholder="Email"
-						path="email" />
+					<form:input class="form-control" type="email" placeholder="Email"
+						path="username" required="required" />
 					<form:input class="form-control" type="password"
-						placeholder="Mot de passe" path="password" />
+						placeholder="Mot de passe" path="password" required="required" />
 					<input class="form-control" type="password"
 						placeholder="Verification du mot de passe"
-						name="passwordVerification" />
+						name="passwordVerification" required="required" />
 					<form:input class="form-control" data-mask="99-99-9999"
-						placeholder="Date de naissance" path="birthday" />
-					<form:input type="hidden" path="enabled" value="1" />
+						placeholder="Date de naissance" path="birthday"
+						required="required" />
+					<select id="UserType" name="type" class="form-control" required>
+						<option selected="selected" disabled="disabled">Type du
+							compte</option>
+						<option value="Student">Etudiant</option>
+						<option value="Teacher">Enseignant</option>
+					</select>
+					<input type="text" name="subject" placeholder="Matière"
+						style="display: none;" class="form-control"/>
+					<hr />
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
 					<button class="btn btn-lg btn-primary btn-block btn-signin"
 						type="submit">S'inscrire</button>
+					<a href="${pageContext.servletContext.contextPath}/login"><button
+							class="btn btn-lg btn-primary btn-block btn-signin">Se
+							connecter</button></a>
 				</form:form>
 			</div>
 		</div>

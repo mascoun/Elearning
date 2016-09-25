@@ -25,7 +25,6 @@ public class User {
 	private int id;
 	private String username;
 	private String password;
-	private String email;
 	private String birthday;
 	private boolean enabled;
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);
@@ -37,7 +36,6 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
-		this.email = email;
 		this.birthday = birthday;
 	}
 
@@ -93,15 +91,6 @@ public class User {
 
 	public void setUserRole(Set<UserRole> userRole) {
 		this.userRole = userRole;
-	}
-
-	@Column(name = "email", nullable = false)
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	@Column(name = "birthday")

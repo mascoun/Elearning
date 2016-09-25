@@ -32,4 +32,17 @@ public class MessageServiceImpl implements MessageService {
 		this.messageDao = messageDao;
 	}
 
+	public List<Message> getunSeenMessages(User user) {
+		return messageDao.findunSeenMessages(user);
+	}
+
+	public Message getMessageById(int id) {
+		return messageDao.findMessageById(id);
+	}
+
+	public void seenMessage(Message message) {
+		messageDao.hasSeenMessage(message);
+
+	}
+
 }

@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@page session="true"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
@@ -46,34 +47,144 @@
     <![endif]-->
 </head>
 <body>
-	Liste des class :
-	<br />
-	<ul>
-		<c:forEach items="${listeClasses}" var="classe">
-			<li><a
-				href="${pageContext.servletContext.contextPath}/admin/classe/${classe.classeId}">${classe.name}</a></li>
-		</c:forEach>
-	</ul>
+	<div class="row">
+		<div
+			class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 alert-window">
+			<h4>
+				Administration
+				<button type="button" class="close" data-toggle="tooltip"
+					data-placement="bottom" title="Logout" id="LogoutButton">
+					<img
+						src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Logout.png "
+						alt="Logout" style="height: 25px; width: 25px;" />
+				</button>
+			</h4>
+
+			<div class="alert-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<span class="glyphicon glyphicon-list"></span>Liste des classes
+							</div>
+							<div class="panel-body">
+								<ul class="list-group">
+									<c:if test="${fn:length(listeClasses) eq 0}">
+										<li class="list-group-item">
+											<div class="text-center">Aucune classe existe</div>
+										</li>
 
 
-	<form:form method="POST" modelAttribute="classe"
-		action="${pageContext.servletContext.contextPath}/admin/addClass">
-		<form:input path="name" />
-		<input type="submit" value="Ajouter !" />
-	</form:form>
+									</c:if>
+									<c:forEach items="${listeClasses}" var="classe">
+
+										<li class="list-group-item">
+											<div class="checkbox">
+												<a
+													href="${pageContext.servletContext.contextPath}/admin/classe/${classe.classeId}"><label
+													for="checkbox">${classe.name}</label></a>
+											</div>
+											<div class="pull-right action-buttons">
+												<a href="#" class="EditClasse" data-id="${classe.classeId}"><span
+													class="glyphicon glyphicon-pencil"></span></a> <a href="#"
+													class="trash DeleteClasse" data-id="${classe.classeId}"><span
+													class="glyphicon glyphicon-trash"></span></a>
+											</div>
+										</li>
+									</c:forEach>
+
+								</ul>
+							</div>
+							<div class="panel-footer">
+								<div class="row">
+									<div class="col-md-12">
+										<form:form method="POST" modelAttribute="classe"
+											action="${pageContext.servletContext.contextPath}/classe/addClass">
+											<label>Nom du classe :</label>
+											<form:input path="name" class="form-control"
+												style="width:50%;display:inline;" />
+											<input type="submit" class="btn btn-primary"
+												value="Ajouter !" />
+										</form:form>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<span class="glyphicon glyphicon-list"></span>Liste des comptes
+								non activés
+							</div>
+							<div class="panel-body">
+								<ul class="list-group">
+									<c:if test="${fn:length(listeUsers) eq 0}">
+										<li class="list-group-item">
+											<div class="text-center">Aucun nouveau utilisateur</div>
+										</li>
 
 
-	<img
-		src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Logout.png "
-		alt="Logout" title="Logout" data-toggle="tooltip"
-		data-placement="bottom" id="LogoutButton" />
-	<c:url value="/logout" var="logoutUrl" />
-	<form action="${logoutUrl}" method="post" id="logoutForm">
-		<input type="hidden" name="${_csrf.parameterName}"
-			value="${_csrf.token}" />
-	</form>
+									</c:if>
+									<c:forEach items="${listeUsers}" var="user">
+
+										<li class="list-group-item">
+											<div class="checkbox">
+												<a href="#"><label for="checkbox">${user.username}</label></a>
+											</div>
+											<div class="pull-right action-buttons">
+												<a href="#" class="activateUser" data-id="${user.id }"><span
+													class="glyphicon glyphicon-check"></span></a> <a href="#"
+													class="deleteUser trash" data-id="${user.id }"><span
+													class="glyphicon glyphicon-trash"></span></a>
+											</div>
+										</li>
+									</c:forEach>
+
+								</ul>
+							</div>
+							<!-- <div class="panel-footer">
+							<div class="row">
+								<div class="col-md-6">
+									<h6>
+										Total Count <span class="label label-info">25</span>
+									</h6>
+								</div>
+								<div class="col-md-6">
+									<ul class="pagination pagination-sm pull-right">
+										<li class="disabled"><a href="javascript:void(0)">«</a></li>
+										<li class="active"><a href="javascript:void(0)">1 <span
+												class="sr-only">(current)</span></a></li>
+										<li><a href="http://www.jquery2dotnet.com">2</a></li>
+										<li><a href="http://www.jquery2dotnet.com">3</a></li>
+										<li><a href="http://www.jquery2dotnet.com">4</a></li>
+										<li><a href="http://www.jquery2dotnet.com">5</a></li>
+										<li><a href="javascript:void(0)">»</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>-->
+						</div>
+					</div>
+					<div class="col-md-12" style="height: 50px;"></div>
 
 
+
+
+					<div class="col-md-12" style="height: 50px;">
+
+						<c:url value="/logout" var="logoutUrl" />
+
+						<form action="${logoutUrl}" method="post" id="logoutForm">
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="${flatuiJs}"></script>

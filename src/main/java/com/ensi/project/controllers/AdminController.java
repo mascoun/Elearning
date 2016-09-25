@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ensi.project.model.Classe;
 import com.ensi.project.model.Student;
 import com.ensi.project.model.Teacher;
+import com.ensi.project.model.User;
 import com.ensi.project.service.ClasseService;
 import com.ensi.project.service.UserService;
 
@@ -38,8 +40,10 @@ public class AdminController {
 		Classe classe = new Classe();
 		final List<Classe> ListeClasses;
 		ListeClasses = classeService.getAllClasses();
+		List<User> ListeUsers = userService.getNotEnabledUsers();
 		pModel.addAttribute("classe", classe);
 		pModel.addAttribute("listeClasses", ListeClasses);
+		pModel.addAttribute("listeUsers", ListeUsers);
 		return "admin";
 	}
 
@@ -64,8 +68,43 @@ public class AdminController {
 
 	}
 
-	@RequestMapping(value = "/admin/addClass", method = RequestMethod.POST)
+	@RequestMapping(value = "/classe/addClass", method = RequestMethod.POST)
 	public String addClasse(@Valid Classe classe, ModelMap model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			classeService.createClasse(classe);
+			return "redirect:/admin";
+		} else {
+			return "redirect:/login";
+		}
+	}
+
+	@RequestMapping(value = "/classe/deleteClass/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteClasse(@PathVariable(value = "id") int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			classeService.deleteClasse(classeService.getClasseById(id));
+			return "SUCCESS";
+		} else {
+			return "ERROR";
+		}
+	}
+
+	@RequestMapping(value = "/classe/editClass/{id}", method = RequestMethod.GET)
+	public String editClasseView(@PathVariable(value = "id") int id, ModelMap model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			model.addAttribute("classe", classeService.getClasseById(id));
+			return "redirect:/admin";
+		} else {
+			return "redirect:/login";
+		}
+	}
+
+	@RequestMapping(value = "/classe/editClass/{id}", method = RequestMethod.PUT)
+	@ResponseBody
+	public String editClasse(@Valid Classe classe, ModelMap model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			classeService.createClasse(classe);
@@ -93,6 +132,23 @@ public class AdminController {
 		} else {
 			return "redirect:/login";
 		}
+	}
+
+	@RequestMapping(value = "/user/verify/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public String verifyUser(@PathVariable(value = "id") int id) {
+		User user = userService.getUserById(id);
+		user.setEnabled(true);
+		userService.update(user);
+		return "SUCCESS";
+	}
+
+	@RequestMapping(value = "/classe/delete/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteUser(@PathVariable(value = "id") int id) {
+		User user = userService.getUserById(id);
+		userService.delete(user);
+		return "SUCCESS";
 	}
 
 	@RequestMapping(value = "/admin/classe/{id}", method = RequestMethod.POST)
@@ -140,7 +196,7 @@ public class AdminController {
 					// teacher.setClasses(classes);
 					// userService.update(teacher);
 				}
-			//classe.setStudents(students);
+			// classe.setStudents(students);
 			classe.setTeachers(teachers);
 			classeService.updateClasse(classe);
 			return "redirect:/admin/classe/{id}";

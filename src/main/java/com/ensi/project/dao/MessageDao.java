@@ -11,5 +11,11 @@ public interface MessageDao {
 	public void send(List<Message> messages);
 
 	public List<Message> findAllMessages(User user);
+	
+	public List<Message> findunSeenMessages(User user);
+
+	public Message findMessageById(int id);
+
+	public void hasSeenMessage(Message message);
 
 }

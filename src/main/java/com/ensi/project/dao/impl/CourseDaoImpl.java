@@ -9,6 +9,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ensi.project.dao.CourseDao;
 import com.ensi.project.model.Course;
@@ -38,8 +39,16 @@ public class CourseDaoImpl implements CourseDao {
 		return course;
 	};
 
+	@SuppressWarnings("unchecked")
+	@Transactional
 	public void deleteCourse(Course course) {
 		getSessionFactory().getCurrentSession().delete(course);
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SeenCourse.class);
+		criteria.add(Restrictions.eq("course.id", course.getIdCourse()));
+		List<SeenCourse> seenCourses = new ArrayList<>((List<SeenCourse>) criteria.list());
+		for (SeenCourse s : seenCourses) {
+			getSessionFactory().getCurrentSession().delete(s);
+		}
 	};
 
 	@SuppressWarnings("unchecked")

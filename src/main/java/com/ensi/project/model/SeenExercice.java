@@ -1,5 +1,6 @@
 package com.ensi.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class SeenExercice {
 		this.id = id;
 	}
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "exercice_id")
 	public Exercice getExercice() {
 		return exercice;
@@ -38,7 +39,7 @@ public class SeenExercice {
 		this.exercice = exercice;
 	}
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "student_id")
 	public Student getStudent() {
 		return student;

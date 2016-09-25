@@ -1,12 +1,16 @@
 package com.ensi.project.dao.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ensi.project.dao.ClasseDao;
 import com.ensi.project.model.Classe;
+import com.ensi.project.model.Student;
 
 public class ClasseDaoImpl implements ClasseDao {
 
@@ -28,8 +32,16 @@ public class ClasseDaoImpl implements ClasseDao {
 		return classe;
 	}
 
+	@Transactional
 	public void deleteClasse(Classe classe) {
+		Set<Student> students = new HashSet<>();
+		students.addAll(classe.getStudents());
 		getSessionFactory().getCurrentSession().delete(classe);
+		for (Student s : students) {
+			s.setClasse(null);
+			getSessionFactory().getCurrentSession().merge(s);
+		}
+		// getSessionFactory().getCurrentSession().flush();
 	}
 
 	@SuppressWarnings("unchecked")

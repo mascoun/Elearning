@@ -46,4 +46,22 @@ public class MessageDaoImpl implements MessageDao {
 		this.sessionFactory = sessionFactory;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Message> findunSeenMessages(User user) {
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Message.class);
+		criteria.add(Restrictions.eq("to.id", user.getId()));
+		criteria.add(Restrictions.eq("seen", false));
+		return criteria.list();
+	}
+
+	public Message findMessageById(int id) {
+		Message message = (Message) getSessionFactory().getCurrentSession().get(Message.class, id);
+		return message;
+	}
+
+	public void hasSeenMessage(Message message) {
+		message.setSeen(true);
+		getSessionFactory().getCurrentSession().merge(message);
+	}
+
 }

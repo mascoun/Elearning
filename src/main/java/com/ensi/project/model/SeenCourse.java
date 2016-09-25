@@ -13,20 +13,20 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "seen_course", uniqueConstraints = @UniqueConstraint(columnNames = { "course_id", "student_id" }) )
 public class SeenCourse {
-	 private int id;
+	private int id;
 	private Course course;
 	private Student student;
 
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.AUTO)
-	 @Column(name = "id", nullable = false)
-	 public int getId() {
-	 return id;
-	 }
-	
-	 public void setId(int id) {
-	 this.id = id;
-	 }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", nullable = false)
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@OneToOne
 	@JoinColumn(name = "course_id")

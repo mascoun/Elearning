@@ -139,7 +139,9 @@
 								data-toggle="tooltip" data-placement="bottom" /></a></li>
 
 						<li><a href="#" data-toggle="modal" data-target="#myModal"
-							id="MessageButton"><img
+							id="MessageButton"><c:if test="${UnseenMessages gt 0}">
+									<span class="notify-badge number red">${UnseenMessages}</span>
+								</c:if> <img
 								src="${pageContext.servletContext.contextPath}/resources/template/img/icons/Courses.png "
 								alt="Messagerie" title="Messagerie" data-toggle="tooltip"
 								data-placement="bottom" /></a></li>

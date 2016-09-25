@@ -8,6 +8,7 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ensi.project.dao.UserDao;
 import com.ensi.project.model.Classe;
@@ -36,13 +37,16 @@ public class UserDaoImpl implements UserDao {
 
 	}
 
-	public void save(User user, UserRole userRole) {
+	@Transactional
+	public void save(User user, Set<UserRole> userRoles) {
 		getSessionFactory().getCurrentSession().persist(user);
-		getSessionFactory().getCurrentSession().persist(userRole);
+		for (UserRole userRole : userRoles) {
+			getSessionFactory().getCurrentSession().persist(userRole);
+		}
 	}
 
 	public void delete(User user) {
-
+		getSessionFactory().getCurrentSession().delete(user);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -100,6 +104,14 @@ public class UserDaoImpl implements UserDao {
 	public List<User> findAllUsers() {
 		List<User> users = new ArrayList<User>();
 		users.addAll(getSessionFactory().getCurrentSession().createCriteria(User.class).list());
+		return users;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<User> findNotEnabledUsers() {
+		List<User> users = new ArrayList<User>();
+		users = getSessionFactory().getCurrentSession().createQuery("from User where enabled=?").setParameter(0, false)
+				.list();
 		return users;
 	}
 }

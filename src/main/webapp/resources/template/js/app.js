@@ -1,5 +1,156 @@
 $(document).ready(function() {
 	var WebSiteURL = "http://127.0.0.1:8080/e-learning";
+	var UploadURL = "http://127.0.0.1:8080/data";
+	// Registration
+	$('#UserType').on('change', function() {
+		if ($(this).val() == "Teacher") {
+			$('input[name="subject"]').show();
+			$('input[name="subject"]').attr("required", "required");
+		} else {
+			$('input[name="subject"]').hide();
+			$('input[name="subject"]').removeAttr("required", "required");
+		}
+	});
+	// ADMIN
+	$('.activateUser').each(function() {
+		$(this).click(function() {
+			$elem = $(this)
+			$.ajax({
+				type : "POST",
+				url : WebSiteURL + "/user/verify/" + $(this).attr("data-id"),
+				success : function(data) {
+					BootstrapDialog.show({
+						title : 'Supprimé !',
+						message : 'Le Compte est Verifié',
+						type : BootstrapDialog.TYPE_SUCCESS
+					});
+					$($elem).parent().parent().addClass('list-group-item-success');
+				},
+				error : function() {
+					BootstrapDialog.show({
+						title : 'Erreur',
+						message : 'Un erreur rencontrée lors de la verification de ce compte',
+						type : BootstrapDialog.TYPE_DANGER
+					});
+				}
+			});
+		});
+	});
+	$(".deleteUser").each(function() {
+		$(this).click(function() {
+			$elem = $(this);
+			var dialog = new BootstrapDialog({
+				title : 'Supprimer',
+				message : 'voulez vous vraiment supprimer ce compte? ',
+				type : BootstrapDialog.TYPE_WARNING,
+				buttons : [ {
+					label : 'Supprimer',
+					cssClass : 'btn-danger',
+					id : 'DeleteUserButton'
+				}, {
+					label : 'Annuler',
+					cssClass : 'btn-default',
+					action : function(dialog) {
+						dialog.close();
+					}
+				} ]
+			});
+			dialog.realize();
+			var DeleteCourseButton = dialog.getButton('DeleteUserButton');
+			$(DeleteCourseButton).click({
+				id : $(this).attr("data-id")
+			}, function(event) {
+				$.ajax({
+					url : WebSiteURL + "/classe/delete/" + event.data.id,
+					data : {
+						id : event.data.id
+					},
+					type : "DELETE",
+					headers : {
+						"X-HTTP-Method-Override" : "DELETE"
+					},
+					success : function(data) {
+						dialog.close();
+						if (data == "SUCCESS") {
+							BootstrapDialog.show({
+								title : 'Supprimer',
+								message : 'Compte Supprimé !',
+								type : BootstrapDialog.TYPE_SUCCESS
+							});
+							$($elem).parent().parent().addClass('list-group-item-danger');
+						} else {
+							$('#myModal').modal('hide');
+							BootstrapDialog.show({
+								title : 'Erreur',
+								message : 'Un erreur rencontrée lors de la suppression du compte.',
+								type : BootstrapDialog.TYPE_DANGER
+							});
+						}
+					}
+				});
+			});
+			dialog.open();
+		});
+	});
+
+	$('.DeleteClasse').each(function() {
+		$(this).click(function() {
+			$elem = $(this);
+			var dialog = new BootstrapDialog({
+				title : 'Supprimer',
+				message : 'voulez vous vraiment supprimer ce classe? ',
+				type : BootstrapDialog.TYPE_WARNING,
+				buttons : [ {
+					label : 'Supprimer',
+					cssClass : 'btn-danger',
+					id : 'DeleteClasseButton'
+				}, {
+					label : 'Annuler',
+					cssClass : 'btn-default',
+					action : function(dialog) {
+						dialog.close();
+					}
+				} ]
+			});
+			dialog.realize();
+			var DeleteCourseButton = dialog.getButton('DeleteClasseButton');
+			$(DeleteCourseButton).click({
+				id : $(this).attr("data-id")
+			}, function(event) {
+				$.ajax({
+					url : WebSiteURL + "/classe/deleteClass/" + event.data.id,
+					data : {
+						id : event.data.id
+					},
+					type : "DELETE",
+					headers : {
+						"X-HTTP-Method-Override" : "DELETE"
+					},
+					success : function(data) {
+						dialog.close();
+						if (data == "SUCCESS") {
+							BootstrapDialog.show({
+								title : 'Supprimer',
+								message : 'Classe Supprimé !',
+								type : BootstrapDialog.TYPE_SUCCESS
+							});
+							$($elem).parent().parent().addClass('list-group-item-danger');
+						} else {
+							$('#myModal').modal('hide');
+							BootstrapDialog.show({
+								title : 'Erreur',
+								message : 'Un erreur rencontrée lors de la suppression du classe.',
+								type : BootstrapDialog.TYPE_DANGER
+							});
+						}
+					}
+				});
+			});
+			dialog.open();
+
+		});
+	});
+	// Others
 	if ($.multiselect) {
 		$('#search').multiselect({
 			search : {
@@ -64,9 +215,9 @@ $(document).ready(function() {
 				url : WebSiteURL + "/uploadFile",
 				data : data,
 				success : function(data) {
-					$('.fileinput-preview.thumbnail[data-trigger="fileinput"]').html("<img src='" + WebSiteURL + "/upload/images/" + data + ".jpg" + "' />");
-					$('#link').val(WebSiteURL + "/upload/documents/" + data + ".pdf");
-					$('#photo').val(WebSiteURL + "/upload/images/" + data + ".jpg");
+					$('.fileinput-preview.thumbnail[data-trigger="fileinput"]').html("<img src='" + UploadURL + "/upload/images/" + data + ".jpg" + "' />");
+					$('#link').val(UploadURL + "/upload/documents/" + data + ".pdf");
+					$('#photo').val(UploadURL + "/upload/images/" + data + ".jpg");
 				},
 				complete : function(data) {
 					console.log(data.responseText);
@@ -418,7 +569,28 @@ $(document).ready(function() {
 			 * 'pdf' ] });
 			 */
 			table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container()));
-
+			// /messages/seen/
+			$('#Table').find('a[data-toggle="Mail"]').each(function() {
+				$(this).on('click', function(e) {
+					var elem = $(this);
+					$.ajax({
+						url : WebSiteURL + "/messages/seen/" + $(this).attr("data-id"),
+						data : {
+							id : $(this).attr("data-id")
+						},
+						type : "PUT",
+						headers : {
+							"X-HTTP-Method-Override" : "PUT"
+						},
+						success : function(data) {
+							// window.location.href = $(elem).attr("href");
+							$('#myModal').load(WebSiteURL + "/messages/" + $(elem).attr("data-id"));
+						}
+					});
+					e.preventDefault();
+					return false;
+				});
+			});
 		});
 	}
 

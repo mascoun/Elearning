@@ -33,10 +33,17 @@ public class UserServiceImpl implements UserService {
 
 	public void save(com.ensi.project.model.User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		UserRole userRole = new UserRole();
-		userRole.setUser(user);
-		userRole.setRole("ROLE_USER");
-		userDao.save(user, userRole);
+		Set<UserRole> Roles = new HashSet<UserRole>();
+		Roles.add(new UserRole(user, "ROLE_USER"));
+		if (user instanceof Student)
+			Roles.add(new UserRole(user, "ROLE_STUDENT"));
+		else
+			Roles.add(new UserRole(user, "ROLE_TEACHER"));
+		// student.setUserRole(Roles);
+		// UserRole userRole = new UserRole();
+		// userRole.setUser(user);
+		// userRole.setRole("ROLE_USER");
+		userDao.save(user, Roles);
 	}
 
 	private User buildUserForAuthentication(com.ensi.project.model.User user, List<GrantedAuthority> authorities) {
@@ -95,5 +102,13 @@ public class UserServiceImpl implements UserService {
 
 	public com.ensi.project.model.User getUserById(int id) {
 		return userDao.findById(id);
+	}
+
+	public List<com.ensi.project.model.User> getNotEnabledUsers() {
+		return userDao.findNotEnabledUsers();
+	}
+
+	public void delete(com.ensi.project.model.User user) {
+		userDao.delete(user);
 	}
 }

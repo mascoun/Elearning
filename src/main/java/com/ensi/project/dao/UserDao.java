@@ -1,6 +1,7 @@
 package com.ensi.project.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import com.ensi.project.model.Classe;
 import com.ensi.project.model.Student;
@@ -13,7 +14,7 @@ public interface UserDao {
 
 	User findById(int id);
 
-	void save(User user, UserRole userRole);
+	void save(User user, Set<UserRole> userRoles);
 
 	void delete(User user);
 
@@ -24,4 +25,6 @@ public interface UserDao {
 	User update(User user);
 
 	List<User> findAllUsers();
+
+	List<User> findNotEnabledUsers();
 }

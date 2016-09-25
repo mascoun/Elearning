@@ -20,6 +20,7 @@ public class Message {
 	private String object;
 	private String body;
 	private Date date;
+	private boolean seen;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -77,5 +78,14 @@ public class Message {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	@Column(name = "seen")
+	public boolean isSeen() {
+		return seen;
+	}
+
+	public void setSeen(boolean seen) {
+		this.seen = seen;
 	}
 }

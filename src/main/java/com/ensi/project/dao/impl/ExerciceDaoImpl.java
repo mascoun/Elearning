@@ -9,6 +9,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ensi.project.dao.ExerciceDao;
 import com.ensi.project.model.Exercice;
@@ -38,8 +39,15 @@ public class ExerciceDaoImpl implements ExerciceDao {
 		return exercice;
 	};
 
+	@SuppressWarnings("unchecked")
+	@Transactional
 	public void deleteExercice(Exercice exercice) {
 		getSessionFactory().getCurrentSession().delete(exercice);
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SeenExercice.class);
+		criteria.add(Restrictions.eq("course.id", exercice.getIdExercice()));
+		for (SeenExercice s : (List<SeenExercice>) criteria.list()) {
+			getSessionFactory().getCurrentSession().delete(s);
+		}
 	};
 
 	@SuppressWarnings("unchecked")
