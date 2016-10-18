@@ -46,7 +46,9 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 		<property name="maxUploadSize" value="10000001" />
 	</bean>
 
-	<bean id="pdf" class="com.ensi.project.util.PDFToImageConverter" />
+	<bean id="pdf" class="com.ensi.project.utils.PDFToImageConverter" />
+	<bean id="doc" class="com.ensi.project.utils.DOCToImageConverter" />
+	<bean id="ppt" class="com.ensi.project.utils.PPTToImageConverter" />
 
 	<!-- <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" 
 		p:location="/WEB-INF/jdbc.properties" /> <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 

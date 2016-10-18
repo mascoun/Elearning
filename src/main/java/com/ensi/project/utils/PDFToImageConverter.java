@@ -1,4 +1,4 @@
-package com.ensi.project.util;
+package com.ensi.project.utils;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,11 +19,11 @@ import com.sun.pdfview.PDFPage;
 
 public class PDFToImageConverter {
 
-	public void convert(String path, String name) throws Exception {
+	public void convert(String path, String name, String ext) throws Exception {
 
 		// load a pdf from a file
 		File file = new File(
-				path + File.separator + "upload" + File.separator + "documents" + File.separator + name + ".pdf");
+				path + File.separator + "upload" + File.separator + "documents" + File.separator + name + ext);
 		RandomAccessFile raf = new RandomAccessFile(file, "r");
 		ReadableByteChannel ch = Channels.newChannel(new FileInputStream(file));
 

@@ -14,17 +14,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ensi.project.util.PDFToImageConverter;
+import com.ensi.project.utils.DOCToImageConverter;
+import com.ensi.project.utils.PDFToImageConverter;
+import com.ensi.project.utils.PPTToImageConverter;
 
 @Controller
 public class FileUploadController {
 
+	// private static final Logger logger = (Logger)
+	// LoggerFactory.getLogger(FileUploadController.class);
+
 	@Autowired
 	PDFToImageConverter pdf;
+
+	@Autowired
+	DOCToImageConverter doc;
+
+	@Autowired
+	PPTToImageConverter ppt;
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public @ResponseBody String uploadFileHandler(@RequestParam("filename") String name,
 			@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+		String ext = name.substring(name.lastIndexOf('.'), name.length());
 		name = name.substring(0, name.lastIndexOf('.')) + System.currentTimeMillis();
 		name = name.replaceAll(" ", "_");
 		if (!file.isEmpty()) {
@@ -39,14 +51,20 @@ public class FileUploadController {
 					dir.mkdirs();
 
 				// Create the file on server
-				File serverFile = new File(dir.getAbsolutePath() + File.separator + name + ".pdf");
+				File serverFile = new File(dir.getAbsolutePath() + File.separator + name + ext);
 				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
 				stream.write(bytes);
 				stream.close();
 
 				// logger.info("Server File Location=" +
 				// serverFile.getAbsolutePath());
-				pdf.convert(rootPath, name);
+				if (ext.equals(".pdf"))
+					pdf.convert(rootPath, name, ext);
+				else if (ext.equals(".doc")) {
+					doc.convert(rootPath, name, ext);
+				} else if (ext.equals(".ppt")) {
+					ppt.convert(rootPath, name, ext);
+				}
 				return name;
 			} catch (Exception e) {
 				return "Error Upload";

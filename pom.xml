@@ -120,6 +120,18 @@
 			<version>2.4</version>
 		</dependency>
 		<dependency>
+			<groupId>com.aspose</groupId>
+			<artifactId>aspose.words</artifactId>
+			<version>14.2.0</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi-ooxml</artifactId> 
+			<version>3.9</version> </dependency> -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>3.2-FINAL</version>
+		</dependency>
+		<dependency>
 			<groupId>org.swinglabs</groupId>
 			<artifactId>pdf-renderer</artifactId>
 			<version>1.0.5</version>

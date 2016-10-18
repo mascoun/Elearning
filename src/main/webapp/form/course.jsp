@@ -39,9 +39,9 @@
 							class="fileinput-new hidden">Selectionner</span><span
 							class="fileinput-exists hidden">Changer</span> <input type="file"
 							id="fileInput" name="file" class=" form-control"
-							accept="application/pdf" /> <input type="hidden" name="filename"
-							id="fileName" /> </span> <a href="#"
-							class="btn btn-default fileinput-exists hidden"
+							accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/pdf" />
+							<input type="hidden" name="filename" id="fileName" /> </span> <a
+							href="#" class="btn btn-default fileinput-exists hidden"
 							data-dismiss="fileinput">Remove</a> <br />
 						<div class="fileinput-preview thumbnail" data-trigger="fileinput"
 							style="height: 200px; width: 100%;"></div>
